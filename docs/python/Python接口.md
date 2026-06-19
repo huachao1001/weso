@@ -71,14 +71,14 @@ addPythonMsgListener(cb: (data:any)=>void):void
 ----
 
 ## python调用js: post_msg
-`post_msg`函数是`LightCode`提供的`python`库函数，用于向`js`发送数据，使用方式如下：
+`post_msg`函数是`weso`提供的`python`库函数，用于向`js`发送数据，使用方式如下：
 
 在`python`代码中：
 ```python
-import lightcode
+import weso
 
 data = "data from python!"
-lightcode.post_msg(data)
+weso.post_msg(data)
 ```
 在`web js`代码中：
 ```javascript

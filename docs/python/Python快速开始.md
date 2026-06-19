@@ -18,17 +18,17 @@
 
 ## 创建项目
 ```shell
-LightCode.exe -d -w D:\MyWork\test_python
+weso.exe -d -w D:\MyWork\test_python
 ```
 其中`D:\MyWork\test_python`是创建的项目路径。
 
 ## 安装Python
 ```shell
-LightCode.exe -e -w D:\MyWork\test_python
+weso.exe -e -w D:\MyWork\test_python
 ```
 执行如上命令后，完成安装，输出如下日志：
 ```log
-LightCode.exe -e -w D:\MyWork\test_python
+weso.exe -e -w D:\MyWork\test_python
 [2025-03-15 13:57:28] >>> 正在下载Python 3.12.9: https://mirrors.aliyun.com/python-release/windows/python-3.12.9-embed-amd64.zip
 [2025-03-15 13:57:29] <<< 下载Python完成...
 [2025-03-15 13:57:29] >>> 正在安装Python 3.12.9 到 D:\MyWork\test_python
@@ -99,7 +99,7 @@ thread.join()
 ## 运行软件
 
 ```shell
-LightCode.exe -d -w D:\MyWork\test_python
+weso.exe -d -w D:\MyWork\test_python
 ```
 软件运行结果如下，可以看到，**抛出的异常也被抓到并显示**：
 
@@ -122,6 +122,6 @@ LightCode.exe -d -w D:\MyWork\test_python
 
 使用如下命令打包：
 ```shell
-LightCode.exe -p -w D:\MyWork\test_python
+weso.exe -p -w D:\MyWork\test_python
 ```
 由于我们的`demo`中的资源文件相对较小，因此打包到一个`exe`文件中，可以看到，将整个`python`虚拟机一起打包到`exe`后，大小只有`11M`左右。
