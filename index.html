@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"> -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LightCode</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="https://lightcodesoft.github.io/">LightCode</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#funcNav">功能</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#demoNav">案例</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" target="_blank" href="/docs/index.html">开发文档</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" target="_blank"
+                            href="https://github.com/LightCodeSoft/LightCodeSoft.github.io/issues/new?template=Blank+issue">提问</a>
+                    </li>
+                    <li class="nav-item nav-qq">
+                        <a class="nav-link" href="#" data-toggle="modal" data-target="#exampleModal">QQ群:1004749406</a>
+                        <div class="qq_qr_group shadow">
+                            <div class="arrow-up"></div>
+                            <img src="/imgs/qq_qr.jpg" />
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <header class="text-white text-center ">
+        <div class="headerContent py-5">
+            <div class="headerPlaceholder"></div>
+            <div class="headerTitleGroup">
+                <h1>欢迎使用LightCode</h1>
+                <p class="lead">一款使用HTML+JS+CSS快速构建应用的轻量级免费开发工具.</p>
+                <a href="https://codeload.github.com/LightCodeSoft/LightCodeSoft.github.io/zip/refs/tags/v1.1.5"
+                    class="btn btn-primary btn-lg downloadBtn">下载最新版V1.1.5</a>
+            </div>
+        </div>
+    </header>
+    <main>
+        <section class="features py-5 text-center">
+            <div class="container">
+                <h2 class="mb-5" id="funcNav">软件功能</h2>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="feature bg-light p-4 mb-4 rounded">
+                            <h3>快速开发</h3>
+                            <p>基于webview2，完全兼容html+js+css技术栈，前端开发者也可以快速开发一款界面美观的软件。</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="feature bg-light p-4 mb-4 rounded">
+                            <h3>轻量级</h3>
+                            <p>库只有~1M，并且打包时对所有资源快速压缩，打包后的软件非常小！以Markdown笔记软件为例，只有~2M.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="feature bg-light p-4 mb-4 rounded">
+                            <h3>安全可控</h3>
+                            <p>打包后的脚本加密存储，源码无法被盗取。内置卡密功能，开发者可以通过卡密盈利。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="screenshots py-5 text-center bg-light">
+            <div class="container">
+                <h2 class="mb-5" id="demoNav">案例</h2>
+                <div class="row">
+                    <div class="screenshot mb-4">
+                        <a href="https://github.com/LightCodeSoft/MDNote"><img src="imgs/1.png" alt="截图1"
+                                class="img-fluid rounded"></a>
+                    </div>
+                    <!-- <div class="col-md-4">
+                        <div class="screenshot mb-4">
+                            <img src="1.png" alt="截图1" class="img-fluid rounded">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="screenshot mb-4">
+                            <img src="screenshot2.jpg" alt="截图2" class="img-fluid rounded">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="screenshot mb-4">
+                            <img src="screenshot3.jpg" alt="截图3" class="img-fluid rounded">
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+        </section>
+    </main>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">加入QQ群：1004749406</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <img src="/imgs/qq_qr.jpg" class="img-fluid" alt="Responsive image">
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="bg-dark text-white text-center py-4">
+        <div class="container">
+            <p>&copy; 2025 LightCodeSoft</p>
+        </div>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

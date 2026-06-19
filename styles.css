@@ -1,0 +1,108 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    min-width: 1024px;
+}
+.arrow-up {
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;  /* 左边透明边界 */
+    border-right: 10px solid transparent; /* 右边透明边界 */
+    border-bottom: 10px solid #fff;       /* 底部实线边界，颜色可以自定义 */
+}
+.nav-qq .arrow-up{
+    position:absolute;
+    top:-10px;
+    left:45px;
+}
+.nav-qq .qq_qr_group{
+    display: none;
+    padding:10px;
+    background-color: #fff;
+    position:absolute;
+    margin-left: 25px;
+}
+.nav-qq .qq_qr_group img{
+    width:100px;
+    height:100px;
+}
+.nav-qq:hover div{
+    display: block;
+}
+.modal-body img{
+    width:200px;
+    margin-left: 130px;
+}
+.headerContent {
+    height: 100%;
+    width: 100%;
+
+    background: url('imgs/bg.jpg');
+    background-size: contain;
+    background-position: left;
+    background-repeat: no-repeat;
+    color: #fff;
+    display: flex;
+    /* align-items: end;
+    justify-items: end; */
+    justify-content: end;
+}
+
+.headerTitleGroup {
+    min-width: 400px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding-top: 100px;
+}
+
+.downloadBtn {
+    margin: 100px auto;
+    max-width:200px;
+}
+
+.headerPlaceholder {
+    width: 100%;
+    height: 100%;
+}
+
+header {
+    background: url('imgs/bg_line.jpg');
+    background-size: contain;
+    background-position: left;
+    background-repeat: repeat-x;
+    color: #fff;
+    height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 3em;
+    margin: 0;
+}
+
+header p {
+    font-size: 1.5em;
+}
+
+.features h2,
+.screenshots h2 {
+    margin-bottom: 2em;
+}
+
+.feature {
+    background: #f4f4f4;
+    padding: 1em;
+    margin: 1em;
+    border-radius: 5px;
+}
+
+.screenshot img {
+    max-width: 100%;
+    border-radius: 5px;
+}
