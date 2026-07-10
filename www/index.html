@@ -1,0 +1,66 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="index/index.css" />
+    <link rel="stylesheet" href="../lib/codemirror/codemirror.css" />
+    <link rel="stylesheet" href="../lib/codemirror/theme/vscode-light.css" />
+
+    <script src="../lib/codemirror/codemirror.js"></script>
+    <script src="../lib/codemirror/mode/javascript/javascript.js"></script>
+    <script src="../lib/codemirror/addon/edit/matchbrackets.js"></script>
+    <script src="../lib/codemirror/addon/edit/closebrackets.js"></script>
+    <script src="../lib/code-editor.js"></script>
+    <script src="index/menu.js"></script>
+</head>
+
+<body>
+    <div class="app-container">
+        <div class="sidebar">
+            <div class="sidebar-header">脚本示例</div>
+            <div class="sidebar-content">
+                <div class="module-list" id="moduleList"></div>
+                <div class="sub-list" id="subList"></div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="header">
+                <div class="breadcrumb">
+                    <span id="currentModule"></span>
+                    <span class="divider">/</span>
+                    <span id="currentTitle"></span>
+                    <div class="toolbar-buttons">
+
+                        <button class="btn-refresh" onclick="location.reload()">↻ 刷新</button>
+                        <button class="btn-run" onclick="runScript()">▶ 运行</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="split-left">
+                    <div class="panel-header">脚本编辑器</div>
+                    <div class="panel-content" id="editorContainer">
+                    </div>
+                </div>
+
+                <div class="resizer" id="resizer"></div>
+
+                <div class="split-right">
+                    <div class="panel-header">输出日志</div>
+                    <div class="panel-content">
+                        <div class="log-output" id="logOutput"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../index/index.js"></script>
+    <script>
+        W.openDevTools();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,226 @@
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Weso 新窗口</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+
+        html,
+        body {
+            height: 100%;
+            background: #F0F0F0;
+            color: #1f2937;
+        }
+
+        /* Flex column layout: title bar is a real top row (not position:fixed),
+           and the content area below scrolls independently. This keeps the
+           scrollbar starting at the title bar's bottom edge, so it no longer
+           overlaps the bar -- looks like a native window chrome. */
+        body {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .card-wrap {
+            flex: 1;
+            overflow: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        /* Custom title bar -- JS-simulated, present for every mode.
+           For Normal/Tool it sits below the native caption as a demo;
+           for Borderless/ToolBorderless it IS the only title bar.
+           Normal flow (flex child), so the scrollbar below never overlaps. */
+        .titlebar {
+            flex: 0 0 auto;
+            height: 36px;
+            background: #2563eb;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 0 0 14px;
+            user-select: none;
+        }
+
+        /* The drag handle fills the bar; child spans opt out via pointer-events
+           so bindDragWin (which only fires when e.target === bar) still works
+           across the whole bar. The close button keeps pointer-events:auto. */
+        .titlebar .title {
+            flex: 1;
+            font-size: 13px;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            pointer-events: none;
+        }
+
+        .titlebar .close-btn {
+            width: 46px;
+            height: 36px;
+            border: none;
+            background: transparent;
+            color: #fff;
+            font-size: 18px;
+            line-height: 1;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .titlebar .close-btn:hover {
+            background: #e81123;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            padding: 32px 40px;
+            max-width: 460px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #dbeafe;
+            color: #2563eb;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 18px;
+        }
+
+        h1 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        p {
+            font-size: 14px;
+            color: #6b7280;
+            line-height: 1.7;
+        }
+
+        .info {
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid #f0f0f0;
+            font-size: 13px;
+            color: #9ca3af;
+            font-family: Consolas, Monaco, monospace;
+            text-align: left;
+        }
+
+        .info .row {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .info .row span:first-child {
+            color: #c0c4cc;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card-wrap">
+        <div class="card">
+            <span class="badge" id="badge">Weso Window</span>
+            <h1 id="title">加载中...</h1>
+            <p id="desc">本页面由 W.createWin() 加载, 是与主窗口完全分离的新窗口实例。</p>
+            <div class="info">
+                <div class="row"><span>entry</span><span>code/window/create/win.html</span></div>
+                <div class="row"><span>HWND</span><span id="hwnd">-</span></div>
+                <div class="row"><span>mode</span><span id="mode">-</span></div>
+                <div class="row"><span>titlebar</span><span id="titlebar-row">-</span></div>
+                <div class="row"><span>taskbar</span><span id="taskbar-row">-</span></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            // W is injected by WebView2 into every new window, so no <script>
+            // include is needed here.
+            if (typeof W === 'undefined') return;
+
+            // Read the real mode from native instead of parsing URL params --
+            // W.getWinMode() / W.isBorderless() always reflect the actual
+            // window state on this side.
+            // Per-mode description table (aligned with WinUtils::WinMode):
+            //   titlebar: who provides the caption
+            //   taskbar:  whether the window appears in the taskbar
+            var modeInfo = [
+                { name: 'Windowed',            titlebar: 'native (min/max/close)', taskbar: 'visible',   desc: '标准窗口, 有边框/标题栏, 显示在任务栏。' },
+                { name: 'WindowedNoTaskbar',   titlebar: 'native (min/max/close)', taskbar: 'hidden',    desc: '有边框/标题栏, 不显示在任务栏。' },
+                { name: 'Borderless',          titlebar: 'none (JS custom)',      taskbar: 'visible',   desc: '无边框, 无原生标题栏, 由本页 JS 自绘拖拽栏 + 关闭按钮。' },
+                { name: 'BorderlessNoTaskbar', titlebar: 'none (JS custom)',      taskbar: 'hidden',    desc: '无边框, 不显示在任务栏, 由本页 JS 自绘拖拽栏 + 关闭按钮。' }
+            ];
+            var mode = W.getWinMode();
+            var info = modeInfo[mode] || { name: 'Unknown(' + mode + ')', titlebar: '-', taskbar: '-', desc: '未知窗口模式。' };
+            var isBorderless = W.isBorderless();
+
+            document.getElementById('badge').textContent = info.name;
+            document.getElementById('title').textContent = info.name + ' 窗口';
+            document.getElementById('desc').textContent = info.desc;
+            document.getElementById('mode').textContent = mode + ' (' + info.name + ')';
+            document.getElementById('hwnd').textContent = String(W.getHWND());
+            document.getElementById('titlebar-row').textContent = info.titlebar;
+            document.getElementById('taskbar-row').textContent = info.taskbar;
+
+            // Windowed(0) / WindowedNoTaskbar(1) own a native caption -- let
+            // the OS handle drag + close, no JS chrome needed.
+            // Borderless(2) / BorderlessNoTaskbar(3) have no title bar at all,
+            // so render a custom one with a drag handle bound via W.bindDragWin
+            // and a close button that destroys this window.
+            if (!isBorderless) return;
+
+            var bar = document.createElement('div');
+            bar.className = 'titlebar';
+
+            var title = document.createElement('span');
+            title.className = 'title';
+            title.textContent = info.name + ' — HWND ' + W.getHWND();
+
+            var closeBtn = document.createElement('button');
+            closeBtn.className = 'close-btn';
+            closeBtn.textContent = '\u00d7';
+            closeBtn.addEventListener('click', function () {
+                W.destroyWin(W.getHWND());
+            });
+
+            bar.appendChild(title);
+            bar.appendChild(closeBtn);
+            // Insert as the first body child so it sits above .card-wrap
+            // in the flex column layout.
+            document.body.insertBefore(bar, document.body.firstChild);
+
+            // Bind drag on the bar; double-click toggles maximize/restore.
+            W.bindDragWin(bar, function (/* x, y */) {
+                if (W.isWindowMaximized()) {
+                    W.normWindow();
+                } else {
+                    W.maxWindow();
+                }
+            });
+        })();
+    </script>
+</body>
+
+</html>

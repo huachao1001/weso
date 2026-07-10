@@ -1,0 +1,103 @@
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>消息子窗口</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+
+        html,
+        body {
+            height: 100%;
+            background: #F0F0F0;
+            color: #1f2937;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            padding: 28px 36px;
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 17px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        p {
+            font-size: 13px;
+            color: #6b7280;
+            line-height: 1.7;
+        }
+
+        .status {
+            margin-top: 18px;
+            padding-top: 14px;
+            border-top: 1px solid #f0f0f0;
+            font-size: 12px;
+            color: #9ca3af;
+            font-family: Consolas, Monaco, monospace;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <h1>消息子窗口</h1>
+        <p id="state">正在向主窗口发送消息...</p>
+        <div class="status">
+            my HWND: <span id="hwnd">-</span><br />
+            main HWND: <span id="main">-</span>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            if (typeof W === 'undefined') return;
+            var myHwnd = W.getHWND();
+            var mainHwnd = W.getMainHWND();
+            document.getElementById('hwnd').textContent = String(myHwnd);
+            document.getElementById('main').textContent = String(mainHwnd);
+
+            // Send a few messages to the main window with small delays so the
+            // main window's addWinMsgListener callback has time to log each.
+            var messages = [
+                { text: 'hello from child', seq: 1 },
+                { text: 'still here',       seq: 2 },
+                { text: 'bye',              seq: 3 }
+            ];
+
+            var i = 0;
+            function sendNext() {
+                if (i >= messages.length) {
+                    document.getElementById('state').textContent = '已发送全部消息';
+                    return;
+                }
+                var msg = messages[i++];
+                W.postWinMsg(mainHwnd, msg);
+                document.getElementById('state').textContent = '已发送: ' + JSON.stringify(msg);
+                setTimeout(sendNext, 800);
+            }
+            setTimeout(sendNext, 500);
+        })();
+    </script>
+</body>
+
+</html>

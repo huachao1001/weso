@@ -1,0 +1,23 @@
+{
+  "entry": "index.html",
+  "injectJS": "",
+  "width": -1,
+  "height": -1,
+  "bgColor": "#F0F0F0",
+  "appNameCN": "Weso示例",
+  "appNameEN": "WesoExample",
+  "borderless": false,
+  "ico": "",
+  "key": "",
+  "fileVer": "0.0.0.1",
+  "productVer": "0.0.0.1-apha",
+  "copyright": "Copyright(C) 2024-2026 WESO",
+  "companyName": "weso Company",
+  "fileDesc": "这是个weso应用",
+  "packAll": false
+}
+
+
+
+
+

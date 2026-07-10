@@ -1,0 +1,9 @@
+node_modules/
+*.txt
+dist/
+output/
+jslib.h
+jslib.js
+.res/
+*.pyc
+py3/

@@ -1,0 +1,5 @@
+{
+    "name": "weso demo",
+    "version": "1.0.0",
+    "desc": "res/ 资源不加密、落盘, 可路径访问; getRes 把相对路径解析为绝对路径后用 readFile 读取"
+}
