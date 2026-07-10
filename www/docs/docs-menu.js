@@ -1,6 +1,6 @@
 // 使用文档的菜单配置与切换逻辑。
 // 结构对齐 index/menu.js：modules 为顶部模块，每个模块下是 {doc,title} 列表。
-// doc 字段是相对 www/ 的路径（../skills/...），由 docs.js 负责解析为可读内容。
+// doc 字段是相对 www/ 的路径（skills/...），由 docs.js 负责解析为可读内容。
 var docsMenu = {
     modules: [
         { id: 'overview', icon: '📋', name: '总览' },
@@ -8,23 +8,23 @@ var docsMenu = {
         { id: 'js', icon: '🧩', name: '页面 JS' }
     ],
     overview: [
-        { doc: '../skills/SKILL.md', title: 'Weso 开发总览' }
+        { doc: 'skills/SKILL.md', title: 'Weso 开发总览' }
     ],
     cli: [
-        { doc: '../skills/reference/cli/create-project.md', title: '新建项目' },
-        { doc: '../skills/reference/cli/package.md', title: '打包与调试' },
-        { doc: '../skills/reference/cli/python-runtime.md', title: 'Python 运行时' },
-        { doc: '../skills/reference/cli/python-libs.md', title: 'Python 第三方库' }
+        { doc: 'skills/reference/cli/create-project.md', title: '新建项目' },
+        { doc: 'skills/reference/cli/package.md', title: '打包与调试' },
+        { doc: 'skills/reference/cli/python-runtime.md', title: 'Python 运行时' },
+        { doc: 'skills/reference/cli/python-libs.md', title: 'Python 第三方库' }
     ],
     js: [
-        { doc: '../skills/reference/file-io.md', title: '文件 I/O' },
-        { doc: '../skills/reference/paths-assets.md', title: '路径与资源' },
-        { doc: '../skills/reference/system.md', title: '系统 / OS' },
-        { doc: '../skills/reference/dll-interop.md', title: 'DLL 互操作' },
-        { doc: '../skills/reference/window.md', title: '窗口管理' },
-        { doc: '../skills/reference/hooks.md', title: '输入 Hook' },
-        { doc: '../skills/reference/python.md', title: 'Python 集成' },
-        { doc: '../skills/reference/messaging.md', title: '消息与 IPC' }
+        { doc: 'skills/reference/file-io.md', title: '文件 I/O' },
+        { doc: 'skills/reference/paths-assets.md', title: '路径与资源' },
+        { doc: 'skills/reference/system.md', title: '系统 / OS' },
+        { doc: 'skills/reference/dll-interop.md', title: 'DLL 互操作' },
+        { doc: 'skills/reference/window.md', title: '窗口管理' },
+        { doc: 'skills/reference/hooks.md', title: '输入 Hook' },
+        { doc: 'skills/reference/python.md', title: 'Python 集成' },
+        { doc: 'skills/reference/messaging.md', title: '消息与 IPC' }
     ]
 };
 

@@ -10,5 +10,5 @@
     "noEmit": true
   },
   "include": ["weso.d.ts", "www/**/*.js"],
-  "exclude": ["node_modules", "www/lib/codemirror", "dist", "output", "python", "res", "skills"]
+  "exclude": ["node_modules", "www/lib/codemirror", "dist", "output", "python", "res", "www/skills"]
 }
