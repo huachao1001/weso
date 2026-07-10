@@ -182,9 +182,9 @@
 
                 // background gradient
                 var bg = ctx.createLinearGradient(0, 0, 0, H);
-                bg.addColorStop(0, '#0a1120');
-                bg.addColorStop(0.42, '#0d1117');
-                bg.addColorStop(1, '#06090f');
+                bg.addColorStop(0, '#eef3f9');
+                bg.addColorStop(0.42, '#e4ecf5');
+                bg.addColorStop(1, '#d4e2f0');
                 ctx.fillStyle = bg;
                 ctx.fillRect(0, 0, W, H);
 
@@ -201,8 +201,8 @@
                 for (var lx = -laneSpan; lx <= laneSpan; lx += laneSpan / (lanes - 1) * 2) {
                     var near = project(lx, floorY, zNear);
                     var far = project(lx, floorY, zFar);
-                    var alpha = Math.abs(lx) < 0.1 ? 0.55 : 0.22;
-                    ctx.strokeStyle = 'rgba(78,161,255,' + alpha + ')';
+                    var alpha = Math.abs(lx) < 0.1 ? 0.45 : 0.2;
+                    ctx.strokeStyle = 'rgba(31,111,235,' + alpha + ')';
                     ctx.lineWidth = 1;
                     ctx.beginPath();
                     ctx.moveTo(far.x, far.y);
@@ -216,8 +216,8 @@
                     var a = project(-laneSpan, floorY, z);
                     var b = project(laneSpan, floorY, z);
                     var depthA = 1 - (z - zNear) / (zFar - zNear);
-                    var alpha = 0.1 + depthA * 0.55;
-                    ctx.strokeStyle = 'rgba(79,180,255,' + alpha + ')';
+                    var alpha = 0.12 + depthA * 0.5;
+                    ctx.strokeStyle = 'rgba(47,129,247,' + alpha + ')';
                     ctx.lineWidth = 0.6 + depthA * 1.4;
                     ctx.beginPath();
                     ctx.moveTo(a.x, a.y);
@@ -227,9 +227,9 @@
 
                 // horizon glow line
                 var hg = ctx.createLinearGradient(cx - 400, horizon, cx + 400, horizon);
-                hg.addColorStop(0, 'rgba(79,161,255,0)');
-                hg.addColorStop(0.5, 'rgba(79,161,255,0.5)');
-                hg.addColorStop(1, 'rgba(79,161,255,0)');
+                hg.addColorStop(0, 'rgba(47,129,247,0)');
+                hg.addColorStop(0.5, 'rgba(47,129,247,0.4)');
+                hg.addColorStop(1, 'rgba(47,129,247,0)');
                 ctx.strokeStyle = hg;
                 ctx.lineWidth = 2;
                 ctx.beginPath();
@@ -257,7 +257,7 @@
                         var dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y;
                         var d = Math.sqrt(dx * dx + dy * dy);
                         if (d < 130) {
-                            ctx.strokeStyle = 'rgba(78,161,255,' + (0.16 * (1 - d / 130)) + ')';
+                            ctx.strokeStyle = 'rgba(47,129,247,' + (0.3 * (1 - d / 130)) + ')';
                             ctx.lineWidth = 0.6;
                             ctx.beginPath();
                             ctx.moveTo(pts[i].x, pts[i].y);
@@ -270,11 +270,11 @@
                 // particle nodes
                 for (i = 0; i < pts.length; i++) {
                     var r = Math.max(0.6, pts[i].s * 0.012);
-                    ctx.fillStyle = 'rgba(150,200,255,0.8)';
+                    ctx.fillStyle = 'rgba(31,111,235,0.85)';
                     ctx.beginPath();
                     ctx.arc(pts[i].x, pts[i].y, r, 0, Math.PI * 2);
                     ctx.fill();
-                    ctx.fillStyle = 'rgba(79,161,255,0.25)';
+                    ctx.fillStyle = 'rgba(47,129,247,0.2)';
                     ctx.beginPath();
                     ctx.arc(pts[i].x, pts[i].y, r * 2.5, 0, Math.PI * 2);
                     ctx.fill();
