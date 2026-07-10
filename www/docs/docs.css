@@ -1,0 +1,195 @@
+/* 使用文档页样式 —— 复用 index/index.css 的整体框架，这里只补充文档特有的部分 */
+
+/* 文档面板：单栏占满主区域 */
+.doc-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+/* 文档渲染区 */
+.doc-view {
+    flex: 1;
+    overflow-y: auto;
+    padding: 28px 36px 48px;
+    background: #fff;
+    color: #1f2937;
+    font-size: 14.5px;
+    line-height: 1.75;
+    min-height: 0;
+}
+
+.doc-view::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.doc-view::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.doc-view::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 3px;
+}
+
+.doc-view::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+}
+
+/* 状态提示 */
+.doc-loading,
+.doc-error {
+    padding: 24px;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.doc-error {
+    color: #b91c1c;
+}
+
+.doc-error .doc-error-tip {
+    display: block;
+    margin-top: 8px;
+    color: #6b7280;
+    font-size: 12.5px;
+}
+
+/* Markdown 元素排版 */
+.doc-view h1 {
+    font-size: 24px;
+    margin: 0 0 16px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e5e7eb;
+    color: #111827;
+    font-weight: 600;
+}
+
+.doc-view h2 {
+    font-size: 19px;
+    margin: 28px 0 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #e5e7eb;
+    color: #1f2937;
+    font-weight: 600;
+}
+
+.doc-view h3 {
+    font-size: 16px;
+    margin: 24px 0 10px;
+    color: #1f2937;
+    font-weight: 600;
+}
+
+.doc-view h4,
+.doc-view h5,
+.doc-view h6 {
+    font-size: 15px;
+    margin: 20px 0 8px;
+    color: #1f2937;
+    font-weight: 600;
+}
+
+.doc-view p {
+    margin: 0 0 12px;
+}
+
+.doc-view ul,
+.doc-view ol {
+    margin: 0 0 12px;
+    padding-left: 24px;
+}
+
+.doc-view li {
+    margin: 4px 0;
+}
+
+.doc-view li > p {
+    margin: 0;
+}
+
+.doc-view a {
+    color: #2563eb;
+    text-decoration: none;
+}
+
+.doc-view a:hover {
+    text-decoration: underline;
+}
+
+.doc-view strong {
+    color: #111827;
+    font-weight: 600;
+}
+
+.doc-view code {
+    font-family: Consolas, 'Monaco', monospace;
+    background: #f3f4f6;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #db2777;
+}
+
+.doc-view pre {
+    background: #f6f8fa;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 12px 14px;
+    overflow: auto;
+    margin: 0 0 14px;
+}
+
+.doc-view pre code {
+    background: none;
+    padding: 0;
+    color: #1f2937;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.doc-view blockquote {
+    border-left: 4px solid #2563eb;
+    background: #eff6ff;
+    padding: 8px 14px;
+    margin: 0 0 14px;
+    color: #374151;
+    border-radius: 0 6px 6px 0;
+}
+
+.doc-view blockquote code {
+    background: #dbeafe;
+}
+
+.doc-view hr {
+    border: none;
+    border-top: 1px solid #e5e7eb;
+    margin: 22px 0;
+}
+
+.doc-view table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 0 0 14px;
+    font-size: 13.5px;
+}
+
+.doc-view th,
+.doc-view td {
+    border: 1px solid #e5e7eb;
+    padding: 8px 12px;
+    text-align: left;
+    vertical-align: top;
+}
+
+.doc-view th {
+    background: #f3f4f6;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.doc-view tbody tr:nth-child(even) td {
+    background: #fafbfc;
+}

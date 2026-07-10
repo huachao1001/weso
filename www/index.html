@@ -17,7 +17,13 @@
 <body>
     <div class="app-container">
         <div class="sidebar">
-            <div class="sidebar-header">脚本示例</div>
+            <div class="sidebar-header">
+                <div class="view-switch" data-active="0">
+                    <div class="view-switch-slider"></div>
+                    <button class="view-switch-item active" onclick="location.href='index.html'">示例</button>
+                    <button class="view-switch-item" onclick="location.href='docs.html'">文档</button>
+                </div>
+            </div>
             <div class="sidebar-content">
                 <div class="module-list" id="moduleList"></div>
                 <div class="sub-list" id="subList"></div>
@@ -31,7 +37,6 @@
                     <span class="divider">/</span>
                     <span id="currentTitle"></span>
                     <div class="toolbar-buttons">
-
                         <button class="btn-refresh" onclick="location.reload()">↻ 刷新</button>
                         <button class="btn-run" onclick="runScript()">▶ 运行</button>
                     </div>
@@ -59,7 +64,7 @@
 
     <script src="../index/index.js"></script>
     <script>
-       // W.openDevTools();
+    //    W.openDevTools();
     </script>
 </body>
 

@@ -27,11 +27,81 @@ body {
 }
 
 .sidebar-header {
-    padding: 14px 18px;
-    font-size: 13px;
-    font-weight: 600;
-    color: #374151;
+    padding: 10px 12px;
     border-bottom: 1px solid #e5e7eb;
+}
+
+/* 示例/文档 分段切换：放在侧边栏顶部，两边互为入口。
+   背后白色滑块随当前页滑入到位，跨页切换时有动画。 */
+.view-switch {
+    position: relative;
+    display: flex;
+    background: #eef2f7;
+    border-radius: 8px;
+    padding: 4px;
+}
+
+/* 滑块：宽度为单格(50%-padding)，靠 data-active 驱动 translateX 滑动 */
+.view-switch-slider {
+    position: absolute;
+    top: 4px;
+    bottom: 4px;
+    left: 4px;
+    width: calc(50% - 4px);
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.16);
+    pointer-events: none;
+    will-change: transform;
+}
+
+.view-switch[data-active="0"] .view-switch-slider {
+    transform: translateX(0);
+    animation: view-switch-to-0 0.34s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.view-switch[data-active="1"] .view-switch-slider {
+    transform: translateX(100%);
+    animation: view-switch-to-1 0.34s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes view-switch-to-0 {
+    from { transform: translateX(100%); }
+    to   { transform: translateX(0); }
+}
+
+@keyframes view-switch-to-1 {
+    from { transform: translateX(0); }
+    to   { transform: translateX(100%); }
+}
+
+.view-switch-item {
+    flex: 1;
+    position: relative;
+    z-index: 1;
+    padding: 7px 0;
+    border: none;
+    background-color: transparent;
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: color 0.15s;
+}
+
+.view-switch-item:hover {
+    color: #334155;
+    background-color: transparent;
+}
+
+.view-switch-item:active {
+    background-color: transparent;
+}
+
+.view-switch-item.active {
+    color: #0f172a;
+    font-weight: 600;
 }
 
 .sidebar-content {

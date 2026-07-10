@@ -1,0 +1,56 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="index/index.css" />
+    <link rel="stylesheet" href="docs/docs.css" />
+    <script src="lib/markdown.js"></script>
+    <script src="docs/docs-menu.js"></script>
+</head>
+
+<body>
+    <div class="app-container">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="view-switch" data-active="1">
+                    <div class="view-switch-slider"></div>
+                    <button class="view-switch-item" onclick="location.href='index.html'">示例</button>
+                    <button class="view-switch-item active" onclick="location.href='docs.html'">文档</button>
+                </div>
+            </div>
+            <div class="sidebar-content">
+                <div class="module-list" id="moduleList"></div>
+                <div class="sub-list" id="subList"></div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="header">
+                <div class="breadcrumb">
+                    <span id="currentModule"></span>
+                    <span class="divider">/</span>
+                    <span id="currentTitle"></span>
+                    <div class="toolbar-buttons">
+                        <button class="btn-refresh" onclick="refreshDoc()">↻ 刷新</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="doc-panel">
+                    <div class="panel-header">文档</div>
+                    <div class="panel-content">
+                        <div class="doc-view" id="docView"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="docs/docs.js"></script>
+    <script>
+        // W.openDevTools();
+    </script>
+</body>
+
+</html>
