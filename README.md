@@ -112,10 +112,3 @@ await W.runPythonScript("import weso\nweso.post_msg({'msg': 'hi'})");
 ```
 
 完整类型定义见 [`weso.d.ts`](weso.d.ts)，开发参考文档见 [`skills/`](skills/)。
-
-## 更多
-
-- **Weso 框架源码**：[huachao1001/weso](https://github.com/huachao1001/weso)
-- **JS 桥接库源码**：[huachao1001/WesoJSLib](https://github.com/huachao1001/WesoJSLib)
-- **开发文档**：[`skills/SKILL.md`](skills/SKILL.md)（CLI 命令 + 页面 JS API 完整参考）
-```
