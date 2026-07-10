@@ -65,7 +65,7 @@ weso-github/
 ### 调试运行
 
 ```bat
-weso.exe -d -w E:\weso-github
+weso.exe -d -w weso
 ```
 
 以工作区为根直接启动应用，无需打包。启动后页面自动打开 DevTools，左侧选择示例，点击「▶ 运行」即可执行。
@@ -73,7 +73,7 @@ weso.exe -d -w E:\weso-github
 ### 打包为 exe
 
 ```bat
-weso.exe -p -w E:\weso-github
+weso.exe -p -w weso
 ```
 
 产物输出到 `dist\Weso示例.exe`。`weso.json` 中 `packAll: false`，res 与 python 以散文件放在 exe 同级目录。
