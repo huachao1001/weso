@@ -4,7 +4,7 @@
 
 ## 这是什么
 
-Weso 是一个用 Web 技术渲染界面、并为页面内的 JavaScript 提供原生（native）能力的 Windows 应用开发框架。Native 能力涵盖文件、窗口、系统等基础操作，**并支持直接调用 C/C++/DLL 以及在页面内运行 Python 脚本**。开发者用 HTML/CSS/JS 写界面，通过 `W`（别称 `weso`）全局对象调用上述原生能力，最终用 `weso.exe` 打包成单文件 exe。
+Weso 是一个用 Web 技术渲染界面、并为页面内的 JavaScript 提供原生（native）能力的 Windows 应用开发框架。Native 能力涵盖文件、Windows 窗口与系统操作，**并支持直接调用 C/C++/DLL 以及在页面内运行 Python 脚本**。开发者用 HTML/CSS/JS 写界面，通过 `W`（别称 `weso`）全局对象调用上述原生能力，最终用 `weso.exe` 打包成单文件 exe。
 
 本仓库是 Weso 的**示例程序**——一个内置代码编辑器与输出日志的交互式 Playground。左侧菜单按模块组织 55 个可运行脚本，选中即可查看代码、点击运行并实时观察原生调用结果。
 
