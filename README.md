@@ -4,7 +4,7 @@
 
 ## 这是什么
 
-Weso 是一个基于 WebView2 的 Windows 桌面应用开发框架。开发者用 HTML/CSS/JS 编写界面，通过注入页面的 `W`（别称 `weso`）全局对象调用原生能力，最终用 `weso.exe` 打包成单文件 exe。
+Weso 是一个用 Web 技术渲染界面、并为页面内的 JavaScript 提供原生（native）能力的 Windows 应用开发框架。开发者用 HTML/CSS/JS 写界面，通过 `W`（别称 `weso`）全局对象调用文件、窗口、DLL、Python 等原生能力，最终用 `weso.exe` 打包成单文件 exe。
 
 本仓库是 Weso 的**示例程序**——一个内置代码编辑器与输出日志的交互式 Playground。左侧菜单按模块组织 55 个可运行脚本，选中即可查看代码、点击运行并实时观察原生调用结果。
 
@@ -59,7 +59,7 @@ weso-github/
 
 ### 前置条件
 
-- Windows 10/11（WebView2 运行时）
+- Windows 10/11
 - `weso.exe`（从 [Weso](https://github.com/huachao1001/weso) 获取）
 
 ### 调试运行
