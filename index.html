@@ -33,7 +33,8 @@
     </nav>
 
     <header class="hero">
-        <div class="hero-overlay"></div>
+        <canvas id="heroCanvas"></canvas>
+        <div class="hero-glow"></div>
         <div class="hero-content">
             <h1>Weso</h1>
             <p class="hero-tagline">用 Web 技术渲染界面、为页面 JavaScript 提供原生能力的 Windows 应用开发框架</p>
@@ -119,6 +120,179 @@
                     links.classList.toggle('open');
                 });
             }
+        })();
+
+        (function () {
+            var canvas = document.getElementById('heroCanvas');
+            if (!canvas) return;
+            var ctx = canvas.getContext('2d');
+            var W, H, cx, horizon, focal;
+            var dpr = Math.min(window.devicePixelRatio || 1, 2);
+            var mouseX = 0, mouseY = 0, tx = 0, ty = 0;
+
+            function resize() {
+                var r = canvas.parentElement.getBoundingClientRect();
+                W = r.width; H = r.height;
+                canvas.width = W * dpr; canvas.height = H * dpr;
+                canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                cx = W / 2; horizon = H * 0.42; focal = 280;
+            }
+
+            // --- 3D perspective projection ---
+            // camera at origin looking down +z into screen; y is height (floor below)
+            function project(x, y, z) {
+                z = Math.max(z, 0.1);
+                var sx = cx + (x / z) * focal + tx;
+                var sy = horizon + (y / z) * focal + ty * 0.3;
+                return { x: sx, y: sy, s: focal / z };
+            }
+
+            // --- perspective grid floor (Tron-style) ---
+            var lanes = 9;          // x lanes
+            var laneSpan = 4;       // half-width in world units
+            var zNear = 1, zFar = 38;
+            var gridZ = [];         // animated z offsets for horizontal lines
+            for (var i = 0; i < 24; i++) gridZ.push(zNear + (zFar - zNear) * (i / 24));
+            var floorY = 6;
+            var speed = 0.18;
+            var t = 0;
+
+            // --- floating particles (tech network) ---
+            var P = [];
+            var PCOUNT = 46;
+            function spawn() {
+                return {
+                    x: (Math.random() - 0.5) * 1.2,
+                    y: Math.random() * 1,
+                    z: 2 + Math.random() * 12,
+                    vx: (Math.random() - 0.5) * 0.0015,
+                    vy: (Math.random() - 0.5) * 0.0008,
+                };
+            }
+            for (var i = 0; i < PCOUNT; i++) P.push(spawn());
+
+            function draw() {
+                t += 0.016;
+                // parallax easing toward mouse
+                tx += (mouseX - tx) * 0.05;
+                ty += (mouseY - ty) * 0.05;
+
+                ctx.clearRect(0, 0, W, H);
+
+                // background gradient
+                var bg = ctx.createLinearGradient(0, 0, 0, H);
+                bg.addColorStop(0, '#0a1120');
+                bg.addColorStop(0.42, '#0d1117');
+                bg.addColorStop(1, '#06090f');
+                ctx.fillStyle = bg;
+                ctx.fillRect(0, 0, W, H);
+
+                // ---- draw grid floor ----
+                // advance horizontal lines toward viewer
+                for (var i = 0; i < gridZ.length; i++) {
+                    gridZ[i] -= speed;
+                    if (gridZ[i] < zNear) gridZ[i] += (zFar - zNear);
+                }
+
+                ctx.lineCap = 'round';
+
+                // vertical lane lines (constant x, varying z)
+                for (var lx = -laneSpan; lx <= laneSpan; lx += laneSpan / (lanes - 1) * 2) {
+                    var near = project(lx, floorY, zNear);
+                    var far = project(lx, floorY, zFar);
+                    var alpha = Math.abs(lx) < 0.1 ? 0.55 : 0.22;
+                    ctx.strokeStyle = 'rgba(78,161,255,' + alpha + ')';
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.moveTo(far.x, far.y);
+                    ctx.lineTo(near.x, near.y);
+                    ctx.stroke();
+                }
+
+                // horizontal lines (constant z)
+                for (i = 0; i < gridZ.length; i++) {
+                    var z = gridZ[i];
+                    var a = project(-laneSpan, floorY, z);
+                    var b = project(laneSpan, floorY, z);
+                    var depthA = 1 - (z - zNear) / (zFar - zNear);
+                    var alpha = 0.1 + depthA * 0.55;
+                    ctx.strokeStyle = 'rgba(79,180,255,' + alpha + ')';
+                    ctx.lineWidth = 0.6 + depthA * 1.4;
+                    ctx.beginPath();
+                    ctx.moveTo(a.x, a.y);
+                    ctx.lineTo(b.x, b.y);
+                    ctx.stroke();
+                }
+
+                // horizon glow line
+                var hg = ctx.createLinearGradient(cx - 400, horizon, cx + 400, horizon);
+                hg.addColorStop(0, 'rgba(79,161,255,0)');
+                hg.addColorStop(0.5, 'rgba(79,161,255,0.5)');
+                hg.addColorStop(1, 'rgba(79,161,255,0)');
+                ctx.strokeStyle = hg;
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(cx - 400, horizon);
+                ctx.lineTo(cx + 400, horizon);
+                ctx.stroke();
+
+                // ---- floating particles network ----
+                var pts = [];
+                for (i = 0; i < P.length; i++) {
+                    var p = P[i];
+                    p.x += p.vx; p.y += p.vy; p.z -= 0.02;
+                    if (p.z < 1.5) { P[i] = spawn(); P[i].z = 12; p = P[i]; }
+                    if (p.y < 0 || p.y > 1) p.vy *= -1;
+                    // project into upper space (above horizon)
+                    var wx = p.x * 5;
+                    var wy = -(1.5 + p.y * 4); // negative = above floor
+                    var pr = project(wx, wy, p.z);
+                    pts.push({ x: pr.x, y: pr.y, s: pr.s, p: p });
+                }
+
+                // connection lines
+                for (i = 0; i < pts.length; i++) {
+                    for (var j = i + 1; j < pts.length; j++) {
+                        var dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y;
+                        var d = Math.sqrt(dx * dx + dy * dy);
+                        if (d < 130) {
+                            ctx.strokeStyle = 'rgba(78,161,255,' + (0.16 * (1 - d / 130)) + ')';
+                            ctx.lineWidth = 0.6;
+                            ctx.beginPath();
+                            ctx.moveTo(pts[i].x, pts[i].y);
+                            ctx.lineTo(pts[j].x, pts[j].y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+
+                // particle nodes
+                for (i = 0; i < pts.length; i++) {
+                    var r = Math.max(0.6, pts[i].s * 0.012);
+                    ctx.fillStyle = 'rgba(150,200,255,0.8)';
+                    ctx.beginPath();
+                    ctx.arc(pts[i].x, pts[i].y, r, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.fillStyle = 'rgba(79,161,255,0.25)';
+                    ctx.beginPath();
+                    ctx.arc(pts[i].x, pts[i].y, r * 2.5, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                requestAnimationFrame(draw);
+            }
+
+            window.addEventListener('resize', resize);
+            canvas.addEventListener('mousemove', function (e) {
+                var r = canvas.getBoundingClientRect();
+                mouseX = ((e.clientX - r.left) / r.width - 0.5) * 60;
+                mouseY = ((e.clientY - r.top) / r.height - 0.5) * 40;
+            });
+            canvas.addEventListener('mouseleave', function () { mouseX = 0; mouseY = 0; });
+
+            resize();
+            draw();
         })();
     </script>
 </body>
