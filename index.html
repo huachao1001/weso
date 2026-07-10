@@ -3,138 +3,124 @@
 
 <head>
     <meta charset="UTF-8">
-    <!-- <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"> -->
-
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weso</title>
+    <title>Weso — 用 Web 技术构建 Windows 应用</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-        <div class="container">
-            <a class="navbar-brand" href="https://huachao1001.github.io/weso">Weso</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#funcNav">功能</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#demoNav">案例</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" target="_blank" href="https://huachao1001.github.io/weso/docs/index.html">开发文档</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" target="_blank"
-                            href="https://github.com/huachao1001/weso/issues/new">提问</a>
-                    </li>
-                    <li class="nav-item nav-qq">
-                        <a class="nav-link" href="#" data-toggle="modal" data-target="#exampleModal">QQ群:1004749406</a>
-                        <div class="qq_qr_group shadow">
-                            <div class="arrow-up"></div>
-                            <img src="/imgs/qq_qr.jpg" />
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
+    <nav class="navbar">
+        <a class="brand" href="/">Weso</a>
+        <button class="nav-toggle" id="navToggle" aria-label="菜单">
+            <span></span><span></span><span></span>
+        </button>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#features">功能</a></li>
+            <li><a href="#showcase">示例</a></li>
+            <li><a href="/docs/">开发文档</a></li>
+            <li><a href="https://github.com/huachao1001/weso/issues/new" target="_blank" rel="noopener">提问</a></li>
+            <li><a href="https://github.com/huachao1001/weso" target="_blank" rel="noopener">GitHub</a></li>
+            <li class="nav-qq">
+                <a href="#" class="qq-trigger">QQ群:1004749406</a>
+                <div class="qq-popover">
+                    <div class="arrow"></div>
+                    <img src="imgs/qq_qr.jpg" alt="QQ群二维码">
+                </div>
+            </li>
+        </ul>
     </nav>
-    <header class="text-white text-center ">
-        <div class="headerContent py-5">
-            <div class="headerPlaceholder"></div>
-            <div class="headerTitleGroup">
-                <h1>欢迎使用Weso</h1>
-                <p class="lead">一款使用HTML+JS+CSS快速构建应用的轻量级免费开发工具.</p>
-                <a href="https://codeload.github.com/wesoSoft/wesoSoft.github.io/zip/refs/tags/v1.1.5"
-                    class="btn btn-primary btn-lg downloadBtn">下载最新版V1.1.5</a>
+
+    <header class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Weso</h1>
+            <p class="hero-tagline">用 Web 技术渲染界面、为页面 JavaScript 提供原生能力的 Windows 应用开发框架</p>
+            <p class="hero-sub">支持调用 C/C++/DLL，页面内运行 Python 脚本，最终打包成单文件 exe</p>
+            <div class="hero-cta">
+                <a class="btn btn-primary" href="/docs/">查看文档</a>
+                <a class="btn btn-outline" href="https://github.com/huachao1001/weso" target="_blank" rel="noopener">GitHub 仓库</a>
             </div>
         </div>
     </header>
+
     <main>
-        <section class="features py-5 text-center">
+        <section class="features" id="features">
             <div class="container">
-                <h2 class="mb-5" id="funcNav">软件功能</h2>
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="feature bg-light p-4 mb-4 rounded">
-                            <h3>快速开发</h3>
-                            <p>基于webview2，完全兼容html+js+css技术栈，前端开发者也可以快速开发一款界面美观的软件。</p>
-                        </div>
+                <h2 class="section-title">核心能力</h2>
+                <p class="section-desc">页面运行时 <code>window.W</code>（及 <code> window.weso</code>）已就绪，提供以下能力域</p>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">📁</div>
+                        <h3>文件 I/O</h3>
+                        <p>文本/二进制/base64 读写、目录创建与列举、文件选择器、资源包读取、文件拖拽监听</p>
                     </div>
-                    <div class="col-md-4">
-                        <div class="feature bg-light p-4 mb-4 rounded">
-                            <h3>轻量级</h3>
-                            <p>库只有~1M，并且打包时对所有资源快速压缩，打包后的软件非常小！以Markdown笔记软件为例，只有~2M.</p>
-                        </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⚙️</div>
+                        <h3>系统</h3>
+                        <p>原生消息框、执行 cmd 命令、环境变量读写、捕获 stdout/stderr、退出应用</p>
                     </div>
-                    <div class="col-md-4">
-                        <div class="feature bg-light p-4 mb-4 rounded">
-                            <h3>安全可控</h3>
-                            <p>打包后的脚本加密存储，源码无法被盗取。内置卡密功能，开发者可以通过卡密盈利。</p>
-                        </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🪟</div>
+                        <h3>窗口管理</h3>
+                        <p>创建/销毁子窗口、拖拽移动、关闭拦截、系统托盘、窗口间通信、键盘/鼠标 Hook</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">➕</div>
+                        <h3>DLL 互操作</h3>
+                        <p>声明 proto，native 自动处理类型转换。支持按句柄、按地址调用与 <code>Dll</code> 封装类</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🐍</div>
+                        <h3>Python 集成</h3>
+                        <p>运行时下载安装、运行脚本/文件、模块搜索路径、JS ↔ Python 双向通信</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📦</div>
+                        <h3>CLI 打包</h3>
+                        <p>新建/调试/打包项目为单文件 exe，脚本加密存储，内置卡密功能</p>
                     </div>
                 </div>
             </div>
         </section>
-        <section class="screenshots py-5 text-center bg-light">
+
+        <section class="showcase" id="showcase">
             <div class="container">
-                <h2 class="mb-5" id="demoNav">案例</h2>
-                <div class="row">
-                    <div class="screenshot mb-4">
-                        <a href="https://github.com/wesoSoft/MDNote"><img src="imgs/1.png" alt="截图1"
-                                class="img-fluid rounded"></a>
-                    </div>
-                    <!-- <div class="col-md-4">
-                        <div class="screenshot mb-4">
-                            <img src="1.png" alt="截图1" class="img-fluid rounded">
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="screenshot mb-4">
-                            <img src="screenshot2.jpg" alt="截图2" class="img-fluid rounded">
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="screenshot mb-4">
-                            <img src="screenshot3.jpg" alt="截图3" class="img-fluid rounded">
-                        </div>
-                    </div> -->
+                <h2 class="section-title">示例 Playground</h2>
+                <p class="section-desc">内置 55 个分类可运行脚本：系统、文件、窗口、C++、Python，选中即可查看代码、运行并实时观察结果</p>
+                <div class="screenshot-wrap">
+                    <a href="https://github.com/huachao1001/weso" target="_blank" rel="noopener">
+                        <img src="imgs/1.png" alt="Weso 示例界面" class="screenshot">
+                    </a>
                 </div>
             </div>
         </section>
     </main>
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">加入QQ群：1004749406</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <img src="/imgs/qq_qr.jpg" class="img-fluid" alt="Responsive image">
-                </div>
-            </div>
-        </div>
-    </div>
-    <footer class="bg-dark text-white text-center py-4">
+
+    <footer class="footer">
         <div class="container">
-            <p>&copy; 2025 wesoSoft</p>
+            <a class="footer-brand" href="/">Weso</a>
+            <div class="footer-links">
+                <a href="/docs/">开发文档</a>
+                <a href="https://github.com/huachao1001/weso" target="_blank" rel="noopener">GitHub</a>
+                <a href="https://github.com/huachao1001/weso/issues/new" target="_blank" rel="noopener">提问</a>
+            </div>
+            <p class="copyright">&copy; 2025 Weso · huachao1001</p>
         </div>
     </footer>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        (function () {
+            var toggle = document.getElementById('navToggle');
+            var links = document.getElementById('navLinks');
+            if (toggle && links) {
+                toggle.addEventListener('click', function () {
+                    links.classList.toggle('open');
+                });
+            }
+        })();
+    </script>
 </body>
 
 </html>
