@@ -19,7 +19,7 @@ body {
 }
 
 .sidebar {
-    width: 200px;
+    width: 280px;
     background: #f9fafb;
     border-right: 1px solid #e5e7eb;
     display: flex;
