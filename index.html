@@ -40,11 +40,11 @@
             <p class="hero-tagline">用 Web 技术渲染界面、为页面 JavaScript 提供原生能力的 Windows 应用开发框架</p>
             <p class="hero-sub">支持调用 C/C++/DLL，页面内运行 Python 脚本，最终打包成单文件 exe</p>
             <div class="hero-cta">
-                <a class="btn btn-primary" href="downloads/weso.exe" download>下载 weso.exe</a>
+                <a class="btn btn-primary" href="https://github.com/huachao1001/weso/releases/latest/download/weso.exe">下载 weso.exe</a>
                 <a class="btn btn-outline" href="docs/#/">查看文档</a>
                 <a class="btn btn-outline" href="https://github.com/huachao1001/weso" target="_blank" rel="noopener">GitHub 仓库</a>
             </div>
-            <p class="hero-version" id="heroVersion" hidden>当前版本：build …</p>
+            <p class="hero-version" id="heroVersion" hidden>当前版本：…</p>
         </div>
     </header>
 
@@ -124,27 +124,27 @@
             }
         })();
 
-        // 自动设置下载版本号: 对 weso.exe 发 HEAD 请求, 读 Last-Modified 头,
-        // 格式化为 build YYYY-MM-DD。exe 每次替换后, 服务端返回的头自动变化,
-        // 页面无需手改文本即自动更新版本显示。
+        // 自动设置下载版本号: 查询 GitHub Releases 最新 release, 取 tag_name 作为版本号。
+        // weso.exe 改为按版本发布到 Releases, 站点不再在仓库内提交二进制;
+        // 每次新建 release 后, 此处自动显示新版本, 无需手改页面。
+        // 无 release 时(404)静默隐藏, 不影响下载按钮(按钮指向 latest/download 快捷链接)。
         (function () {
             var el = document.getElementById('heroVersion');
             if (!el || !window.fetch) return;
-            fetch('downloads/weso.exe', { method: 'HEAD' })
-                .then(function (r) {
-                    var lm = r.headers.get('Last-Modified');
-                    if (!lm) return null;
-                    var d = new Date(lm);
-                    return isNaN(d) ? null : d;
-                })
-                .then(function (d) {
-                    if (!d) return;
-                    var pad = function (n) { return String(n).padStart(2, '0'); };
-                    var s = d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
-                    el.innerHTML = '当前版本：build ' + s + ' · <a href="downloads/weso.exe" download>weso.exe</a>';
+            var ownerRepo = 'huachao1001/weso';
+            fetch('https://api.github.com/repos/' + ownerRepo + '/releases/latest', {
+                headers: { 'Accept': 'application/vnd.github+json' }
+            })
+                .then(function (r) { return r.ok ? r.json() : null; })
+                .then(function (data) {
+                    if (!data || !data.tag_name) return;
+                    var tag = data.tag_name;
+                    var url = data.html_url || ('https://github.com/' + ownerRepo + '/releases/latest');
+                    el.innerHTML = '当前版本：<a href="' + url + '" target="_blank" rel="noopener">' + tag + '</a>' +
+                        ' · <a href="https://github.com/' + ownerRepo + '/releases" target="_blank" rel="noopener">历史版本</a>';
                     el.hidden = false;
                 })
-                .catch(function () { /* 取不到版本就静默隐藏, 不影响下载按钮 */ });
+                .catch(function () { /* 未联网或无 release, 静默隐藏 */ });
         })();
 
         (function () {
