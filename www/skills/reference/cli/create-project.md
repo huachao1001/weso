@@ -58,6 +58,7 @@ weso.exe -n [project_name] [-w project_path]
   "appNameCN": "新建项目",
   "appNameEN": "NewProject",
   "borderless": false,
+  "transparent": false,
   "ico": "",
   "key": "",
   "fileVer": "0.0.0.1",
@@ -79,6 +80,7 @@ weso.exe -n [project_name] [-w project_path]
 | `bgColor` | 窗口背景色（`#RRGGBB`） |
 | `appNameCN`/`appNameEN` | 中/英文应用名，`appNameEN` 亦作窗口类名 |
 | `borderless` | 是否无边框窗口 |
+| `transparent` | 主窗口是否创建即透明（`true` 时创建带 `WS_EX_NOREDIRECTIONBITMAP`，透明像素直显桌面）。仅种子主窗口；子窗口透明用 `W.createWin({transparent:true})`。打包时同样写入 exe 字符串表 |
 | `ico` | 图标路径（相对工作区或绝对，留空用默认） |
 | `key` | 授权 key，留空=免费应用 |
 | `fileVer`/`productVer` | 版本信息（写入 exe 属性） |

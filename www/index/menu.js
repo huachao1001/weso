@@ -103,6 +103,12 @@ var menuConfig = {
                 { script: 'code/window/hook/keyboard.js', title: '键盘 Hook' },
                 { script: 'code/window/hook/mouse.js', title: '鼠标 Hook' }
             ]
+        },
+        pet: {
+            name: '透明挂件',
+            items: [
+                { script: 'code/window/pet/pet.js', title: '桌面猫咪' }
+            ]
         }
     },
     cpp: {

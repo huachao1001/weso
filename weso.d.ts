@@ -127,6 +127,10 @@ export interface Weso {
         title?: string;
         mode?: WinModeValue;
         bgColor?: string;
+        /** 创建即透明: 创建时传 WS_EX_NOREDIRECTIONBITMAP, 透明像素直显桌面。
+         *  真透明窗口必须创建时指定此选项 (运行时 setTransparent 无法补上)。
+         *  配合页面 html/body 无背景 + setTransparent 切 webview alpha。 */
+        transparent?: boolean;
     }): unknown;
     destroyWin(hwnd: number): void;
     /** 当前窗口是否无边框样式。 */
@@ -150,6 +154,35 @@ export interface Weso {
     setOnClickCloseIconListener(listener: () => void): void;
     /** 显示托盘图标及菜单, 菜单项点击回调 cb(key)。 */
     showTray(icon: string, title: string, items: Map<number, string>, cb: (key: number) => void): void;
+
+    /**
+     * 启用/关闭目标窗口的真透明背景。
+     * - webview 与原生窗口背景一并置透明, 页面任意 transparent 区域直接显示桌面。
+     * - 重要: 想让透明像素显示桌面, 窗口必须用 createWin({transparent:true}) 创建
+     *   (WS_EX_NOREDIRECTIONBITMAP 只在创建时生效)。本接口仅切换 webview alpha;
+     *   对非"创建即透明"的窗口调用, 透明像素会露出窗口 #F0F0F0 背景, 不是桌面。
+     * - enable 为开关; hwnd 缺省作用于调用方窗口, 传入则作用于指定子窗口。
+     */
+    setTransparent(enable: boolean, hwnd?: number): void;
+    /**
+     * 启用/关闭鼠标点击穿透(透形窗口常用)。
+     * - enable=true 时该窗口只显示不响应任何鼠标事件, 适合只观赏的桌面挂件。
+     * - hwnd 缺省作用于调用方窗口, 传入则作用于指定子窗口。
+     */
+    setClickThrough(enable: boolean, hwnd?: number): void;
+    /**
+     * 启用/关闭始终置顶(topmost)。
+     * - enable=true 时窗口浮在所有非 topmost 窗口之上, 全屏窗口也盖不住。
+     * - hwnd 缺省作用于调用方窗口, 传入则作用于指定子窗口。
+     */
+    setAlwaysOnTop(enable: boolean, hwnd?: number): void;
+    /**
+     * 显式控制原生 aero 投影阴影(仅无边框窗口生效; 有边框窗口阴影由系统标题栏管理)。
+     * - 覆盖 setTransparent 的默认联动(透明->关阴影, 不透明->开阴影);
+     *   想强制特定阴影状态时, 在 setTransparent 之后调用本接口。
+     * - hwnd 缺省作用于调用方窗口, 传入则作用于指定子窗口。
+     */
+    setShadow(enable: boolean, hwnd?: number): void;
 
     /** 注册键盘钩子, 事件经 cb 回调。 */
     hookKeyboard(cb: (e: KeyboardEvent) => void): void;

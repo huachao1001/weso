@@ -1,0 +1,177 @@
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>桌面萌宠</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: transparent;
+            /* 主窗口 W.setTransparent(true, hwnd) 已把 webview 与原生窗口背景都置透明,
+               body 这里也透明, 萌宠 PNG 直接浮在桌面。 */
+            font-family: system-ui, -apple-system, sans-serif;
+            cursor: grab;
+            user-select: none;
+        }
+
+        body:active { cursor: grabbing; }
+
+        .stage {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 内部 48x48 画布按像素硬放大到 180x180, 保持像素艺术清晰边缘 */
+        #cat {
+            width: 180px;
+            height: 180px;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+
+        .bubble {
+            position: absolute;
+            top: 14%;
+            left: 50%;
+            transform: translateX(-50%) scale(0);
+            transform-origin: bottom center;
+            background: #fff;
+            color: #3a3a3a;
+            font-size: 15px;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 14px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, .18);
+            white-space: nowrap;
+            pointer-events: none;
+            transition: transform .18s cubic-bezier(.34, 1.56, .64, 1);
+        }
+
+        .bubble.show { transform: translateX(-50%) scale(1); }
+
+        .bubble::after {
+            content: "";
+            position: absolute;
+            bottom: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: #fff;
+            border-bottom: 0;
+        }
+
+        .close {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            width: 22px;
+            height: 22px;
+            border: 0;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, .18);
+            color: #fff;
+            font-size: 14px;
+            line-height: 1;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity .2s;
+        }
+
+        body:hover .close { opacity: 1; }
+
+        .close:hover { background: #e81123; }
+    </style>
+</head>
+
+<body>
+    <div class="stage">
+        <canvas id="cat" width="48" height="48"></canvas>
+    </div>
+
+    <div class="bubble" id="bubble">喵~</div>
+    <button class="close" id="close" title="关闭">×</button>
+
+    <script>
+        (function () {
+            if (typeof W === 'undefined') return;
+
+            // cat.png: 横向 4 帧, 每帧 48x48 - 0 idle | 1 blink | 2 happy | 3 speak
+            var FW = 48, F_BLINK = 1, F_HAPPY = 2, F_SPEAK = 3;
+            var canvas = document.getElementById('cat');
+            var ctx = canvas.getContext('2d');
+            ctx.imageSmoothingEnabled = false;
+
+            var img = new Image();
+            img.onload = loop;
+            img.src = 'cat.png';
+
+            // 帧状态机: speak 优先 -> blink -> happy -> idle
+            var happy = false, speakUntil = 0, blinkUntil = 0;
+            var now = function () { return Date.now(); };
+
+            function frame() {
+                var t = now();
+                if (t < speakUntil) return F_SPEAK;
+                if (t < blinkUntil) return F_BLINK;
+                return happy ? F_HAPPY : 0;
+            }
+
+            function render() {
+                ctx.clearRect(0, 0, 48, 48);
+                ctx.drawImage(img, frame() * FW, 0, FW, 48, 0, 0, 48, 48);
+            }
+
+            function loop() { render(); requestAnimationFrame(loop); }
+
+            // 周期眨眼: 每 ~3.5s 闪一下 blink 帧, 持续 140ms
+            (function blink() {
+                setTimeout(function () {
+                    if (now() >= speakUntil) blinkUntil = now() + 140;
+                    blink();
+                }, 2800 + Math.random() * 1800);
+            })();
+
+            // 对话气泡
+            var bubble = document.getElementById('bubble'), bt = null;
+            function say(text, ms) {
+                bubble.textContent = text;
+                bubble.classList.add('show');
+                if (bt) clearTimeout(bt);
+                bt = setTimeout(function () { bubble.classList.remove('show'); }, ms || 1200);
+            }
+            function speak(text, ms) {
+                speakUntil = now() + (ms || 800);
+                say(text, (ms || 800) + 300);
+            }
+
+            // 交互: 单击喵一声 + 拖动猫身移动整窗 + 双击切换开心
+            // bindDragWin 仅响应 target==currentTarget 的 mousedown, 故必须绑 canvas 本身
+            // (绑 body 时 canvas 是子元素, mousedown 被它层拦截, 拖不动).
+            // onDlbClick 由 bindDragWin 内部用 mousedown 时间戳检测, 避免再挂 dblclick
+            // 监听导致双击时 happy 切换两次回到原态.
+            canvas.addEventListener('click', function () { speak('喵~', 700); });
+            W.bindDragWin(canvas, function () {
+                happy = !happy;
+                say(happy ? '好开心~' : '...', 1000);
+            });
+
+            // 关闭按钮
+            document.getElementById('close').addEventListener('click', function (e) {
+                e.stopPropagation();
+                W.destroyWin(W.getHWND());
+            });
+
+            // 进场问候
+            setTimeout(function () { speak('主人好~', 1200); }, 200);
+        })();
+    </script>
+</body>
+
+</html>

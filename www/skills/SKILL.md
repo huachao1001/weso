@@ -57,7 +57,7 @@ console.log(W.getWorkspace());
 | 路径、资源、工作区 | `reference/paths-assets.md` |
 | 弹窗、命令、环境变量、控制台、退出 | `reference/system.md` |
 | 调 DLL、原生函数 | `reference/dll-interop.md` |
-| 窗口、拖拽、托盘、关闭按钮 | `reference/window.md` |
+| 窗口、拖拽、托盘、关闭按钮、透明/穿透/置顶/阴影 | `reference/window.md` |
 | 键盘/鼠标 Hook | `reference/hooks.md` |
 | 运行 Python | `reference/python.md` |
 | 窗口间通信、事件监听、拖拽文件 | `reference/messaging.md` |
@@ -172,12 +172,12 @@ console.log(W.getWorkspace());
 | `W.invokeByAddr` | 异步 | 按地址调用 |
 | `new W.Dll(path)` | — | DLL 封装类（缓存地址，反复调用首选） |
 
-### Window（18 函数 + WinMode 常量）
+### Window（22 函数 + WinMode 常量）
 
 | 函数名 | 同步/异步 | 用途 |
 |--------|----------|------|
 | `W.WinMode` | 常量 | 窗口样式枚举 |
-| `W.createWin` | 同步 | 创建子窗口，返回 hwnd |
+| `W.createWin` | 同步 | 创建子窗口，返回 hwnd（`transparent:true` 创建即透明, 见工作流 3） |
 | `W.destroyWin` | 同步 | 按 hwnd 销毁窗口 |
 | `W.showWindow`/`hideWindow` | 同步 | 显示/隐藏当前窗口 |
 | `W.minWindow`/`maxWindow`/`normWindow` | 同步 | 最小化/最大化/还原 |
@@ -188,6 +188,10 @@ console.log(W.getWorkspace());
 | `W.bindDragWin` | 同步 | 绑定拖拽手柄 |
 | `W.setOnClickCloseIconListener` | 同步 | 拦截关闭按钮 |
 | `W.showTray` | 同步 | 系统托盘菜单 |
+| `W.setTransparent` | 同步 | 切透明背景（webview alpha=0 + 联动阴影；需 `createWin({transparent:true})` 配合） |
+| `W.setClickThrough` | 同步 | 切鼠标点击穿透 |
+| `W.setAlwaysOnTop` | 同步 | 切始终置顶 |
+| `W.setShadow` | 同步 | 显式控 aero 阴影（覆盖 transparent 默认联动） |
 
 ### Hooks（4 个）
 
