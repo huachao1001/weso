@@ -74,6 +74,12 @@ var menuConfig = {
                 { script: 'code/window/create/destroy.js', title: '销毁窗口' }
             ]
         },
+        inject: {
+            name: '页面注入',
+            items: [
+                { script: 'code/window/inject/inject_js.js', title: 'injectJS 注入在线网站' }
+            ]
+        },
         info: {
             name: '句柄与屏幕',
             items: [

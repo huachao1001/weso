@@ -73,8 +73,8 @@ weso.exe -n [project_name] [-w project_path]
 
 | 字段 | 含义 |
 |------|------|
-| `entry` | `www/` 下入口文件名 |
-| `injectJS` | 注入到页面的额外 JS 文件名（可空） |
+| `entry` | `www/` 下入口文件名，也可是在线 URL（如 `https://...`） |
+| `injectJS` | 注入到主入口页面的额外 JS 文件名（可空）。**主要面向在线网页**：把 `entry` 指向在线网站后，用 `injectJS` 往该网站注入自定义逻辑，本地页面亦可注入但通常无此需要。仅作用于主入口窗口，不注入 `W.createWin` 动态创建的子窗口 |
 | `width`/`height` | 窗口初始尺寸 |
 | `bgColor` | 窗口背景色（`#RRGGBB`） |
 | `appNameCN`/`appNameEN` | 中/英文应用名，`appNameEN` 亦作窗口类名 |
