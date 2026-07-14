@@ -59,7 +59,10 @@ export declare class Dll {
 }
 
 export interface Weso {
-    readFile(args: { path: string; encoding?: string }): Promise<string>;
+    readFile(args: { path: string; encoding?: 'binary' }): Promise<Uint8Array>;
+    readFile(args: { path: string; encoding?: 'base64' }): Promise<string>;
+    readFile(args: { path: string; encoding?: 'utf8' | 'utf-8' }): Promise<string>;
+    readFile(args: { path: string; encoding?: FileEncoding }): Promise<string | Uint8Array>;
     readLines(args: { path: string }): Promise<string[]>;
     writeFile(args: { path: string; data: string | ArrayBuffer | Uint8Array | number[]; encoding?: FileEncoding; offset?: number }): Promise<boolean>;
     listdir(args: string | { path: string; filter?: number }): Promise<string[]>;

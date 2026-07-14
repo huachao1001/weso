@@ -19,13 +19,11 @@
 ### FileEncoding
 
 - `"utf8"` | `"utf-8"`：文本。读取返回文件文本；写入时 `data` 必须是 string。
-- `"binary"`：二进制。**读取返回 base64 字符串**（非原始字节，需 `atob`+
-  `Uint8Array` 解码）；写入时 `data` 必须是 `ArrayBuffer`/`Uint8Array`/`number[]`。
-- `"base64"`：base64。读取返回 base64；写入时 `data` 是 base64 字符串，底层解码
-  为字节后写入。
-
-> ⚠️ `readFile({ encoding: "binary" })` 返回的是 base64 不是字节数组，这是高频
-> 错误点。
+- `"binary"`：二进制。**读取返回 `Uint8Array`**（native 经 base64 通道传输后由 JS
+  runtime 自动解码，调用方直接拿到原始字节）；写入时 `data` 必须是
+  `ArrayBuffer`/`Uint8Array`/`number[]`。
+- `"base64"`：base64。读取返回 base64 字符串；写入时 `data` 是 base64 字符串，底层解码
+  为字节后写入。需要 base64 文本本身（如拼 data URL）时用此编码，要原始字节用 `binary`。
 
 ---
 
@@ -44,11 +42,9 @@
 // 文本
 var text = await W.readFile({ path: "C:\\app\\config.json", encoding: "utf8" });
 
-// 二进制 -> 字节
-var b64 = await W.readFile({ path: path, encoding: "binary" });
-var binStr = atob(b64);
-var bytes = new Uint8Array(binStr.length);
-for (var i = 0; i < binStr.length; i++) bytes[i] = binStr.charCodeAt(i);
+// 二进制 -> 直接拿到 Uint8Array
+var bytes = await W.readFile({ path: path, encoding: "binary" });
+console.log(bytes.length, bytes[0]);
 ```
 
 ---
@@ -235,11 +231,10 @@ var lines = await W.readLines({ path: dir + "\\note.txt" });
 console.log(lines);   // ["hello", "world"]
 ```
 
-### 工作流 2：二进制文件复制（base64 中转）
+### 工作流 2：二进制文件复制
 
 ```js
-var b64 = await W.readFile({ path: srcPath, encoding: "binary" });
-var bytes = new Uint8Array(Array.prototype.map.call(atob(b64), function (c) { return c.charCodeAt(0); }));
+var bytes = await W.readFile({ path: srcPath, encoding: "binary" });
 await W.writeFile({ path: dstPath, data: bytes, encoding: "binary" });
 ```
 

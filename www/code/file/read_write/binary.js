@@ -24,16 +24,9 @@ async function main() {
 
     // 读取二进制数据
     console.log("\n2. 读取二进制文件")
-    // 注意: binary 读取现在返回 base64 字符串(worker 走 readBase64File);
-    // 用 atob 解码后再转 Uint8Array。
-    var b64 = await W.readFile({ path: path, encoding: "binary" });
-    console.log("  读取到(base64): " + b64);
-
-    // base64 -> Uint8Array
-    var binStr = atob(b64);
-    var bytes = new Uint8Array(binStr.length);
-    for (var i = 0; i < binStr.length; i++) bytes[i] = binStr.charCodeAt(i);
-
+    // encoding=binary 时, W.readFile 直接返回 Uint8Array(native 经 base64
+    // 通道传输后由 JS runtime 自动解码), 无需再手动 atob。
+    var bytes = await W.readFile({ path: path, encoding: "binary" });
     console.log("  读取到(字节): " + JSON.stringify(Array.from(bytes)));
 
     // Uint8Array转回字符串
