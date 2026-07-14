@@ -222,6 +222,18 @@ code {
 
 .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
 
+.hero-version {
+    margin: 16px 0 0;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+.hero-version a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+}
+.hero-version a:hover { text-decoration: underline; }
+
 /* ---------- Sections ---------- */
 .features, .showcase {
     padding: 90px 0;
