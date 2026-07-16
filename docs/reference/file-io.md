@@ -19,11 +19,10 @@
 ### FileEncoding
 
 - `"utf8"` | `"utf-8"`：文本。读取返回文件文本；写入时 `data` 必须是 string。
-- `"binary"`：二进制。**读取返回 `Uint8Array`**（native 经 base64 通道传输后由 JS
-  runtime 自动解码，调用方直接拿到原始字节）；写入时 `data` 必须是
+- `"binary"`：二进制。**读取返回 `Uint8Array`**（直接拿到原始字节）；写入时 `data` 必须是
   `ArrayBuffer`/`Uint8Array`/`number[]`。
-- `"base64"`：base64。读取返回 base64 字符串；写入时 `data` 是 base64 字符串，底层解码
-  为字节后写入。需要 base64 文本本身（如拼 data URL）时用此编码，要原始字节用 `binary`。
+- `"base64"`：base64。读取返回 base64 字符串；写入时 `data` 是 base64 字符串。需要
+  base64 文本本身（如拼 data URL）时用此编码，要原始字节用 `binary`。
 
 ---
 

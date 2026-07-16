@@ -39,13 +39,12 @@ weso.exe -e -v <version> [-w <path>] [--py-proxy <url>]
 
 - 嵌入版默认不含 pip；需要 pip 时用 `weso.exe -i pip -v <版本>`
   （见 `python-libs.md`）。
-- `pythonw.exe` 会被删除。
-- `.pdb` 调试符号会被递归清理以减小体积。
+- 安装会精简不必要的文件以减小体积。
 
 ## 如何判断已安装
 
-存在 `<工作区>/python/py3/<版本>/python<主><次>.dll` 即视为该版本已装，
-重复 `-e` 会跳过下载。agent 可据此先检查再决定是否提示用户安装。
+重复执行 `-e -v <版本>` 时，若该版本已装会跳过下载。查看 `python/py3/<版本>/`
+目录是否存在即可判断是否已安装。
 
 ## 下载源
 

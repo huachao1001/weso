@@ -50,9 +50,9 @@ weso.exe -p [-w <path>] [-v <version>] [-y <py_dir>]
 ### 打包流程（用户须知）
 
 1. 读取 `weso.json` 配置。
-2. 若 `python/src/` 有 `.py`，调用 Python 把它们编译为 `.pyc`（源码不进包）。
-3. res + python 打进 `.dotRes.wpk` 嵌入 exe 尾部（若存在 res/ 或 python/）。
-4. `www/` 打成加密代码包（每次随机 `assetsKey`），追加进 exe。
+2. 若 `python/src/` 有 `.py`，编译为 `.pyc` 后随包下发（源码不进包）。
+3. res 与 python 随包打入 exe（若存在 res/ 或 python/）。
+4. `www/` 随包打入 exe。
 5. 改写 exe 元数据（图标、版本、窗口尺寸、标题等来自 `weso.json`）。
 
 ### 安装包模式
@@ -61,19 +61,19 @@ weso.exe -p [-w <path>] [-v <version>] [-y <py_dir>]
 
 1. 弹出安装路径选择对话框（输入框 + 浏览按钮），默认路径为
    `%LOCALAPPDATA%\Programs\<appNameEN>`。
-2. 将 `.dotRes.wpk` 解压到用户选择的安装路径（res/ 与 python/ 并排落地）。
-3. 把 exe 精简（去掉嵌入的 dotRes 字节，size 字段清零）复制到安装路径。
+2. 将 res 与 python 解压到用户选择的安装路径（并列落地）。
+3. 把精简后的 exe 复制到安装路径。
 4. 在桌面和开始菜单创建快捷方式，指向已安装的 exe。
 5. 自动启动已安装副本，安装包进程退出。
 
-已安装的精简 exe 尾部 dotRes size=0，再次双击直接进入应用模式（无需安装）。
-无 res/python 的纯 www 应用打包后 dotRes size=0，双击也直接运行。
+已安装的 exe 再次双击直接进入应用模式（无需安装）。
+无 res/python 的纯 www 应用打包后双击也直接运行。
 
 ### 输出
 
 - 打包产物在工作区下的 `dist\` 目录：
   `dist\<appNameCN>.exe`（`appNameCN` 取自 `weso.json`）。
-- 输出目录名固定为 `dist`（构建目录名常量）。
+- 输出目录名固定为 `dist`。
 
 ### 路径/资源过滤规则
 
