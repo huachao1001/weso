@@ -1,6 +1,6 @@
 # Weso 示例程序
 
-基于 [Weso](https://github.com/huachao1001/weso) 框架开发的官方示例应用，以交互式代码编辑器的形式演示 Weso 全部页面 JS API 的用法。
+基于 [Weso](https://huachao1001.github.io/weso/) 框架开发的官方示例应用，以交互式代码编辑器的形式演示 Weso 全部页面 JS API 的用法。
 
 ## 这是什么
 
@@ -62,7 +62,7 @@ weso-github/
 ### 前置条件
 
 - Windows 10/11
-- `weso.exe`（从 [Weso](https://github.com/huachao1001/weso) 获取）
+- `weso.exe`（从 [Weso](https://huachao1001.github.io/weso/) 获取）
 
 ### 调试运行
 
