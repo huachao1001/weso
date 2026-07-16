@@ -89,7 +89,7 @@ console.log(W.getWorkspace());
 4. **没有 Node API。** 无 `require`/`fs`/`path`/`process`。用浏览器 API
    （`fetch`、`TextEncoder`、`Uint8Array`、`btoa/atob`）+ `W.*`。
 5. **监听器叠加。** `addNativeMsgListener` 及其衍生函数注册的回调可叠加。**移除有限**：
-   通用 `addNativeMsgListener`/`addWinMsgListener`/`addFileDragListener` **无公开 remove API**；
+   通用 `addNativeMsgListener`/`addWinMsgListener`/`addFileDragListener` **无 remove API**；
    仅 `removePythonMsgListener`、`captureConsoleOutput()`（不传 cb）、`unhook*` 可停用，
    且需传同一个函数引用。
 
@@ -189,10 +189,10 @@ console.log(W.getWorkspace());
 | `W.bindDragWin` | 同步 | 绑定拖拽手柄 |
 | `W.setOnClickCloseIconListener` | 同步 | 拦截关闭按钮 |
 | `W.showTray` | 同步 | 系统托盘菜单 |
-| `W.setTransparent` | 同步 | 切透明背景（webview alpha=0 + 联动阴影；需 `createWin({transparent:true})` 配合） |
+| `W.setTransparent` | 同步 | 切透明背景（联动阴影；需 `createWin({transparent:true})` 配合） |
 | `W.setClickThrough` | 同步 | 切鼠标点击穿透 |
 | `W.setAlwaysOnTop` | 同步 | 切始终置顶 |
-| `W.setShadow` | 同步 | 显式控 aero 阴影（覆盖 transparent 默认联动） |
+| `W.setShadow` | 同步 | 显式控阴影（覆盖 transparent 默认联动） |
 
 ### Hooks（4 个）
 
@@ -222,7 +222,7 @@ console.log(W.getWorkspace());
 |--------|----------|------|
 | `W.postWinMsg` | 同步 | 向指定 hwnd 窗口发消息 |
 | `W.addWinMsgListener` | 同步注册 | 注册窗口消息回调 |
-| `W.addNativeMsgListener` | 同步注册 | 通用事件监听（无公开 remove） |
+| `W.addNativeMsgListener` | 同步注册 | 通用事件监听（无 remove） |
 | `W.addFileDragListener` | 同步注册 | 文件拖拽回调 |
 
 ---

@@ -152,10 +152,10 @@
             }
 
             // 交互: 单击喵一声 + 拖动猫身移动整窗 + 双击切换开心
-            // bindDragWin 仅响应 target==currentTarget 的 mousedown, 故必须绑 canvas 本身
-            // (绑 body 时 canvas 是子元素, mousedown 被它层拦截, 拖不动).
-            // onDlbClick 由 bindDragWin 内部用 mousedown 时间戳检测, 避免再挂 dblclick
-            // 监听导致双击时 happy 切换两次回到原态.
+            // bindDragWin 只在手柄元素本身按下鼠标时触发拖动, 故必须绑 canvas 本身
+            // (绑 body 时点击落在子元素 canvas 上, 拖不动窗口).
+            // 双击切换 happy 由 bindDragWin 的 onDlbClick 回调处理, 不要再额外挂 dblclick
+            // 监听, 否则双击会触发两次导致 happy 切回原态.
             canvas.addEventListener('click', function () { speak('喵~', 700); });
             W.bindDragWin(canvas, function () {
                 happy = !happy;

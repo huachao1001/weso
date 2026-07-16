@@ -24,8 +24,7 @@ async function main() {
 
     // 读取二进制数据
     console.log("\n2. 读取二进制文件")
-    // encoding=binary 时, W.readFile 直接返回 Uint8Array(native 经 base64
-    // 通道传输后由 JS runtime 自动解码), 无需再手动 atob。
+    // encoding=binary 时, W.readFile 直接返回 Uint8Array, 无需再手动 atob。
     var bytes = await W.readFile({ path: path, encoding: "binary" });
     console.log("  读取到(字节): " + JSON.stringify(Array.from(bytes)));
 

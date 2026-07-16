@@ -45,7 +45,7 @@ weso.exe -n [project_name] [-w project_path]
 
 ## weso.json 默认值
 
-`-n` 通过 `Config::writeDefaultJson` 写入如下默认配置；若 `weso.json` 已存在则
+`-n` 会写入如下默认配置；若 `weso.json` 已存在则
 **保留不动**，不覆盖：
 
 ```json
@@ -79,19 +79,17 @@ weso.exe -n [project_name] [-w project_path]
 | `bgColor` | 窗口背景色（`#RRGGBB`） |
 | `appNameCN`/`appNameEN` | 中/英文应用名，`appNameEN` 亦作窗口类名 |
 | `borderless` | 是否无边框窗口 |
-| `transparent` | 主窗口是否创建即透明（`true` 时创建带 `WS_EX_NOREDIRECTIONBITMAP`，透明像素直显桌面）。仅种子主窗口；子窗口透明用 `W.createWin({transparent:true})`。打包时同样写入 exe 字符串表 |
+| `transparent` | 主窗口是否创建即透明（`true` 时窗口创建即启用真透明背景，透明像素直显桌面）。仅主窗口；子窗口透明用 `W.createWin({transparent:true})` |
 | `ico` | 图标路径（相对工作区或绝对，留空用默认） |
 | `key` | 授权 key，留空=免费应用 |
 | `fileVer`/`productVer` | 版本信息（写入 exe 属性） |
 | `copyright`/`companyName`/`fileDesc` | exe 属性元数据 |
 
-`assetsKey` 不写入配置：每次 `-p` 打包随机生成，写进 exe 字符串表。
-
 ## 幂等性
 
 - `weso.json` 已存在 → 保留，仅提示。
 - `www/index.html` 已存在 → 不覆盖。
-- 目录已存在 → `makedirs` 静默跳过。
+- 目录已存在 → 静默跳过。
 
 因此 `-n` 可安全地在已有项目上补建缺失的目录/文件，不会破坏用户改动。
 

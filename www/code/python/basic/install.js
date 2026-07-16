@@ -10,11 +10,11 @@ async function main() {
     //   3.13.14  — 3.13 分支最新稳定版
     //   3.14.6   — 3.14 分支最新稳定版 (当前最新可用)
     var version     = "3.12.10";
-    var urlRoot     = "https://mirrors.ustc.edu.cn/python";  // 空 = native 默认 USTC
+    var urlRoot     = "https://mirrors.ustc.edu.cn/python";  // 空 = 用默认镜像
     // pyDir 是「用户 .py 源码目录名」(相对 workspace), 不是解释器安装目录。
-    // 解释器固定装到 python\py3\<version>\ (供 _initPython 加载 dll 用);
+    // 解释器固定装到 python\py3\<version>\;
     // pyDir 只影响 sys.path (initPython 后 runPythonScript import 用户模块时的搜索路径)
-    // 和 compileSrc (打包时编译 .py 为 .pyc)。两者是独立路径, 不要混淆。
+    // 和打包时 .py 编译为 .pyc 的源码目录。两者是独立路径, 不要混淆。
     var pyDir       = "python/src";
     var pipProxy    = "";          // pip index url, 暂未使用, 预留给未来运行时 pip
     var force       = false;       // true = 跳过 isPythonInstalled 强制重下

@@ -19,11 +19,6 @@ weso.exe -i <name>[<specifier>] -v <version> [-w <path>] [--pip-proxy <url>]
 | `-v <version>` | 目标 Python 版本，**必需** |
 | `--pip-proxy <url>` | pip index，默认 `https://mirrors.aliyun.com/pypi/simple/` |
 
-实际执行等价于（`-i` 后的整段原样拼进命令）：
-```
-python/py3/<版本>/python.exe -m pip install <name><specifier> --index-url=<pip-proxy>
-```
-
 > ⚠️ `-i` 后的版本约束**原样传给 pip**，不做任何 `=`→`==` 转换。pip 不认单 `=`，
 > 故写 `-i requests=2.32.3` 会被 pip 报 `Invalid requirement`。必须用 pip 语法
 > `-i requests==2.32.3`（或 `>=`/`~=`/`!=` 等）。
@@ -50,20 +45,12 @@ weso.exe -r <requirements_file> -v <version> [-w <path>] [--pip-proxy <url>]
 | `-v <version>` | 目标 Python 版本，**必需** |
 | `--pip-proxy <url>` | pip index |
 
-实际执行等价于：
-```
-python/py3/<版本>/python.exe -m pip install -r <file> --index-url=<pip-proxy>
-```
-
 ## 安装位置
 
-- `-i <lib>` / `-r` 安装的库进入**该 Python 自身的**
-  `python\py3\<版本>\Lib\site-packages`。
-- `-i pip`（安装 pip 本身）则装进**独立目录** `<LocalAppData>\weso\pip\<主><次>\`，
-  不放项目 Python 内。
+- `-i <lib>` / `-r` 安装的库进入**该 Python 自身的** `python\py3\<版本>\Lib\site-packages`。
+- `-i pip`（安装 pip 本身）装进独立目录，不放项目 Python 内。
 
-二者装好的包都能被该版本 Python import（路径已自动配置）。打包 `-p` 时这些库随
-`python/` 一起进资源包。
+二者装好的包都能被该版本 Python import。打包 `-p` 时这些库随 `python/` 一起进包。
 
 ## 换源
 

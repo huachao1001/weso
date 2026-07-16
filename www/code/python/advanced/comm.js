@@ -8,9 +8,8 @@ async function main() {
     }
 
     // JS <-> Python 双向通信:
-    //   Python -> JS: Python 调 weso.post_msg(obj), 经 native __post_str_msg 转发
-    //                 到 __pyMsg 通道, JS 用 addPythonMsgListener 接收 (cb 收到的
-    //                 是 JSON 解析后的对象, 不是字符串)。
+    //   Python -> JS: Python 调 weso.post_msg(obj), JS 用 addPythonMsgListener 接收
+    //                 (cb 收到的是 JSON 解析后的对象, 不是字符串)。
     //   JS -> Python: 把数据 JSON.stringify 后拼进 runPythonScript 传给 Python。
     // removePythonMsgListener 需传同一引用 (与 add 配对), 匿名函数无法 remove。
     function onPyMsg(data) {

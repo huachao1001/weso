@@ -50,9 +50,9 @@
 - `title`? string
 - `mode`? WinModeValue：默认 `0`
 - `bgColor`? string
-- `transparent`? boolean：默认 `false`。`true` 时窗口创建即带 `WS_EX_NOREDIRECTIONBITMAP`,
-  透明像素直显桌面（真透明背景的**关键**, 运行时 `setTransparent` 无法补上该 exStyle）。
-  需配合页面 html/body 无背景 + `setTransparent(true, hwnd)` 切 webview alpha=0。
+- `transparent`? boolean：默认 `false`。`true` 时窗口创建即为真透明背景，透明像素直显
+  桌面（真透明背景的**关键**, 运行时 `setTransparent` 无法把非透明创建的窗口补成真透明）。
+  需配合页面 html/body 无背景 + `setTransparent(true, hwnd)` 切换透明开关。
 
 ```js
 var hwnd = W.createWin({ entry: "child.html", width: 500, height: 400, mode: W.WinMode.Borderless });
@@ -213,15 +213,15 @@ W.showTray("", "我的应用", items, function (key) {
 
 **参数：**
 
-- `enable`* boolean：`true` 把 webview 与原生窗口背景一并置透明（alpha=0），页面任何
+- `enable`* boolean：`true` 把窗口背景置透明，页面任何
   `transparent` 区域直接显示桌面；`false` 恢复不透明
 - `hwnd`? number：目标窗口句柄。**缺省作用于调用方窗口**；操作 `createWin` 创建的子窗口
   必须传入其 hwnd
 
-> 真透明需要窗口在创建时已带 `WS_EX_NOREDIRECTIONBITMAP`，即 `createWin({transparent:true})`
-> 或主窗口 `weso.json` `"transparent": true`。本接口只切换 webview alpha；
+> 真透明需要窗口在创建时即启用透明背景，即 `createWin({transparent:true})`
+> 或主窗口 `weso.json` `"transparent": true`。本接口只切换透明开关；
 > 对"非创建即透明"的窗口调用，透明像素会露出窗口 `bgColor`（默认 `#F0F0F0`），不是桌面。
-> `enable=true` 时默认联动关闭 aero 阴影（透明窗口加阴影会显示为方形 halo）。
+> `enable=true` 时默认联动关闭阴影（透明窗口加阴影会显示为方形光晕）。
 
 ```js
 var hwnd = W.createWin({ entry: "pet.html", /*...*/, transparent: true });
@@ -267,7 +267,7 @@ W.setAlwaysOnTop(true, petHwnd);
 
 ### `W.setShadow`
 
-同步显式控制原生 aero 投影阴影（仅无边框窗口生效；有边框窗口阴影由系统标题栏管理）。
+同步显式控制原生投影阴影（仅无边框窗口生效；有边框窗口阴影由系统标题栏管理）。
 
 **参数：**
 
@@ -279,7 +279,7 @@ W.setAlwaysOnTop(true, petHwnd);
 
 ```js
 W.setTransparent(true, petHwnd); // 默认会关阴影
-W.setShadow(true, petHwnd);      // 强制开阴影（透明窗口加方形 halo, 非常规但可演示）
+W.setShadow(true, petHwnd);      // 强制开阴影（透明窗口加方形光晕, 非常规但可演示）
 ```
 
 ---
@@ -308,7 +308,7 @@ var childHwnd = W.createWin({ entry: "child.html", width: 420, height: 220 });
 ### 工作流 3：透明桌面挂件
 
 把 4 个新 API 串起来做一个浮在桌面的萌宠。要点：**真透明必须 `transparent:true`
-创建**, `setTransparent` 只切 webview alpha 不能补 exStyle。
+创建**, `setTransparent` 只切换透明开关，无法把非透明创建的窗口补成真透明。
 
 ```js
 var screen = W.getScreenRect();
@@ -317,13 +317,13 @@ var w = 220, h = 220, margin = 24;
 var x = screen.right - w - margin;
 var y = taskbar.top - h - margin; // 避开底部任务栏, 不在底部时回退屏幕底
 
-// 1) 创建即透明（关键: WS_EX_NOREDIRECTIONBITMAP 在 CreateWindowEx 时一次性写入）
+// 1) 创建即透明（关键: 真透明背景必须在创建窗口时启用）
 var hwnd = W.createWin({
     entry: "pet.html", width: w, height: h, x: x, y: y,
     mode: W.WinMode.BorderlessNoTaskbar, transparent: true
 });
 
-// 2) 把 webview alpha 也置 0 + 始终置顶 + 显式关阴影 + 显式可点击
+// 2) 启用透明 + 始终置顶 + 显式关阴影 + 显式可点击
 W.setTransparent(true, hwnd);
 W.setAlwaysOnTop(true, hwnd);
 W.setShadow(false, hwnd);

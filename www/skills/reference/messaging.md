@@ -9,7 +9,7 @@
 
 - **监听器叠加**：所有 `add*Listener` 注册的回调可叠加，多次调用注册多个回调（同一函数引用被去重）。
 - **监听器移除（重要限制）**：`addNativeMsgListener` 注册后**无法移除**（没有对应的
-  公开 remove 方法，`W.removeNativeMsgListener` 不存在，调用会报错）。真正能移除回调的只有：
+  remove 方法，`W.removeNativeMsgListener` 不存在，调用会报错）。真正能移除回调的只有：
   - `W.removePythonMsgListener(listener)`（Python 消息）
   - `W.captureConsoleOutput()`（不传 cb 关闭控制台监听）
   
@@ -65,7 +65,7 @@ W.addWinMsgListener(function (data) {
 - `type`* string：事件类型名
 - `cb`* (data: unknown) => void
 
-> 内置事件请用专用 helper，不要自行注册其内部 type 字符串。
+> 内置事件请用专用 helper，不要自行注册内置事件名。
 
 ```js
 function onCustom(data) { console.log("custom:", data); }
