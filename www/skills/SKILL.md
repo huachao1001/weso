@@ -136,11 +136,12 @@ console.log(W.getWorkspace());
 | `W.openInExplorer` | 同步 | 资源管理器中显示 |
 | `W.openFileSelector` | 异步 | 文件/目录选择器 |
 
-### Paths & Assets（7 个）
+### Paths & Assets（8 个）
 
 | 函数名 | 同步/异步 | 用途 |
 |--------|----------|------|
-| `W.getWorkspace` | 同步 | 工作区根路径 |
+| `W.getWorkspace` | 同步 | 工作区根路径（debug=工程根; release=安装路径） |
+| `W.getExeFolder` | 同步 | exe 所在目录（release=安装路径; res/python 在此旁） |
 | `W.getResFolder` | 同步 | res/ 资源目录路径 |
 | `W.getLocalFolder` | 同步 | LocalAppData 路径 |
 | `W.getRoamingFolder` | 同步 | RoamingAppData 路径 |
@@ -315,7 +316,7 @@ W.bindDragWin(document.getElementById("titlebar"), function () {
 
 **CLI：**
 - **新建项目**（目录结构 / weso.json 默认值 / -n 用法）→ `reference/cli/create-project.md`
-- **打包与调试**（-p/-d/-w/-h / 输出产物 / packAll 模式）→ `reference/cli/package.md`
+- **打包与调试**（-p/-d/-w/-h / 输出产物 / 安装包模式）→ `reference/cli/package.md`
 - **Python 运行时**（-e/-v/-y/--py-proxy / 安装目录布局）→ `reference/cli/python-runtime.md`
 - **Python 第三方库**（-i/-r/--pip-proxy / 装库与装 pip）→ `reference/cli/python-libs.md`
 

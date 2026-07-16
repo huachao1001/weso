@@ -78,7 +78,7 @@ weso.exe -d -w <your-workspace>/weso
 weso.exe -p -w <your-workspace>/weso
 ```
 
-产物输出到 `dist\Weso示例.exe`。`weso.json` 中 `packAll: false`，res 与 python 以散文件放在 exe 同级目录。
+产物输出到 `dist\Weso示例.exe`。打包后的 exe 是安装包：双击后选择安装路径，res 与 python 解压到安装目录，同时在桌面和开始菜单创建快捷方式。
 
 ## API 概览
 

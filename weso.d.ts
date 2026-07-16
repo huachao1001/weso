@@ -73,8 +73,10 @@ export interface Weso {
     createFile(args: string | { path: string }): boolean;
     openInExplorer(args: string | { path: string }): unknown;
     openFileSelector(args: { path?: string; multiSelect?: boolean; onlyFolder?: boolean } | string): Promise<string[]>;
-    /** 工作区根路径。 */
+    /** 工作区根路径。debug=开发工程根目录; release=安装路径(=exe所在目录)。 */
     getWorkspace(): string;
+    /** exe 所在目录。debug=开发工程根目录; release=安装路径。res/python 在此目录旁。 */
+    getExeFolder(): string;
     /** res 资源目录绝对路径。 */
     getResFolder(): string;
     /** LocalAppData 路径。 */

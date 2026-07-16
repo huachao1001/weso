@@ -61,8 +61,8 @@ weso.exe -e -v <version> [-w <path>] [--py-proxy <url>]
 
 ## 与打包的关系
 
-- `-e` 装的 Python 供 `-p` 打包时编译 `.py` → `.pyc`，并随 `packAll` 模式
-  进单 exe 或散文件目录。
+- `-e` 装的 Python 供 `-p` 打包时编译 `.py` → `.pyc`，并随 res+python 打包进 exe。
+  双击打包后的 exe 安装时，python/ 解压到用户选择的安装路径。
 - `-p` 不带 `-v` 时自动从 `python/py3/` 探测版本；多版本会报错。
 - `-y`（默认 `python/src`）在 `-p` 时指定源码目录，与 `-e` 无直接关系。
 
