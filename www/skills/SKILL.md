@@ -154,7 +154,7 @@ console.log(W.getWorkspace());
 | 函数名 | 同步/异步 | 用途 |
 |--------|----------|------|
 | `W.alert` | 同步 | 原生消息框 |
-| `W.system` | 同步 | 执行 cmd 命令，返回 stdout+stderr 合并输出 |
+| `W.system` | 异步 | 执行 cmd 命令，返回 stdout+stderr 合并输出 |
 | `W.getEnv` | 同步 | 读环境变量 |
 | `W.setEnv` | 同步 | 写环境变量 |
 | `W.captureConsoleOutput` | 同步注册 | 捕获原生 stdout/stderr |
