@@ -65,8 +65,7 @@ weso.exe -n [project_name] [-w project_path]
   "productVer": "0.0.0.1-apha",
   "copyright": "Copyright(C) 2024-2026 WESO",
   "companyName": "weso Company",
-  "fileDesc": "这是个weso应用",
-  "packAll": true
+  "fileDesc": "这是个weso应用"
 }
 ```
 
@@ -85,7 +84,6 @@ weso.exe -n [project_name] [-w project_path]
 | `key` | 授权 key，留空=免费应用 |
 | `fileVer`/`productVer` | 版本信息（写入 exe 属性） |
 | `copyright`/`companyName`/`fileDesc` | exe 属性元数据 |
-| `packAll` | `true`=单 exe（res+python 嵌入）；`false`=散文件（res+python 放 exe 旁） |
 
 `assetsKey` 不写入配置：每次 `-p` 打包随机生成，写进 exe 字符串表。
 

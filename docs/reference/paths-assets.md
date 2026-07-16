@@ -1,6 +1,6 @@
 # Weso JS — Paths & Assets 模块参考
 
-覆盖标准目录解析与打包资源读取共 7 个函数。用于拼接文件 I/O 所需的磁盘绝对路径。
+覆盖标准目录解析与打包资源读取共 8 个函数。用于拼接文件 I/O 所需的磁盘绝对路径。
 
 ---
 
@@ -8,7 +8,11 @@
 
 ### `W.getWorkspace`
 
-同步返回应用工作区根路径（`www/`、`res/`、`python/` 所在目录），`string`。
+同步返回应用工作区根路径，`string`。
+
+- **debug**：开发工程根目录（`www/`、`res/`、`python/` 所在目录）。
+- **release**：安装路径（= exe 所在目录）。打包后的 exe 作为安装包，双击选择安装路径后，
+  res/python 解压到该路径下，exe 精简复制到同目录。`getWorkspace()` 返回该安装路径。
 
 ```js
 var root = W.getWorkspace();
@@ -17,9 +21,27 @@ var outDir = root + "\\output";
 
 ---
 
+### `W.getExeFolder`
+
+同步返回 exe 所在目录，`string`。用于定位 exe 旁的 res/python 等资源。
+
+- **debug**：与 `getWorkspace()` 相同（开发工程根目录）。
+- **release**：安装路径（exe 所在目录）。res/python 在此目录下
+  （`getExeFolder() + "\\res"`、`getExeFolder() + "\\python"`）。
+
+```js
+var exeDir = W.getExeFolder();
+var resDir = exeDir + "\\res";
+```
+
+---
+
 ### `W.getResFolder`
 
 同步返回 `res/` 资源目录的绝对路径，`string`。`res/` 落盘，可按路径访问。
+
+- **debug**：`<workspace>\res`。
+- **release**：`<安装路径>\res`（exe 旁的 res 目录）。
 
 ```js
 var resDir = W.getResFolder();
