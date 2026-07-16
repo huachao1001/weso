@@ -92,8 +92,8 @@ export interface Weso {
 
     /** 弹出系统消息框。 */
     alert(msg: string | { msg: string }): unknown;
-    /** 执行系统命令, 返回输出。 */
-    system(cmd: string | { cmd: string }): string;
+    /** 异步执行系统命令 (NativeWorker 线程, 不阻塞 UI); resolve 返回 stdout+stderr 合并输出。 */
+    system(cmd: string | { cmd: string }): Promise<string>;
     /** 取环境变量。 */
     getEnv(name: { name: string }): unknown;
     /** 设置环境变量; append=true 时追加。 */

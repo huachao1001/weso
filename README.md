@@ -92,7 +92,7 @@ await W.writeFile({ path: "C:\\out.txt", data: "hello", encoding: "utf8" });
 
 // 系统与 OS
 W.alert("原生消息框");
-W.system("echo hello");                      // 执行 cmd，返回 stdout+stderr
+W.system("echo hello");                      // 执行 cmd，异步返回 stdout+stderr (需 await)
 
 // DLL 互操作 —— 声明 proto，native 自动处理类型转换
 W.invokeDll({

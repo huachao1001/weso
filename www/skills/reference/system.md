@@ -23,18 +23,20 @@ W.alert({ msg: "对象写法" });
 
 ### `W.system`
 
-同步执行 cmd.exe 命令并返回 **stdout 与 stderr 的合并输出**。会阻塞 UI 线程，不要跑长任务。
+异步执行 cmd.exe 命令并返回 **stdout 与 stderr 的合并输出**。命令在 NativeWorker
+线程上跑（`cmd /c` + 管道读输出 + 等待进程退出），不阻塞 UI 线程；返回 Promise，
+resolve 拿到合并输出字符串。
 
 **参数：**
 
 - `cmd`* string | { cmd: string }
 
 ```js
-var out = W.system("dir C:\\");
+var out = await W.system("dir C:\\");
 console.log(out);
 ```
 
-> 长任务请走 Python（`runPythonScript`），不要用 `system`。
+> 必须用 `await`。长任务也无需再改走 Python——`system` 本身已异步不卡 UI。
 
 ---
 
