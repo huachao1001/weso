@@ -1,0 +1,101 @@
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>事件子窗口</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+
+        html,
+        body {
+            height: 100%;
+            background: #F0F0F0;
+            color: #1f2937;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            padding: 28px 36px;
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 17px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        p {
+            font-size: 13px;
+            color: #6b7280;
+            line-height: 1.7;
+        }
+
+        .status {
+            margin-top: 18px;
+            padding-top: 14px;
+            border-top: 1px solid #f0f0f0;
+            font-size: 12px;
+            color: #9ca3af;
+            font-family: Consolas, Monaco, monospace;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <h1>事件子窗口</h1>
+        <p id="state">注册监听中...</p>
+        <div class="status">
+            my HWND: <span id="hwnd">-</span><br />
+            main HWND: <span id="main">-</span>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            if (typeof W === 'undefined') return;
+            var myHwnd = W.getHWND();
+            var mainHwnd = W.getMainHWND();
+            document.getElementById('hwnd').textContent = String(myHwnd);
+            document.getElementById('main').textContent = String(mainHwnd);
+
+            // 把本窗口收到的事件转发给主窗口, 由主窗口的 addWinMsgListener 统一打印
+            function forward(name, info) {
+                W.postWinMsg(mainHwnd, { event: name, info: info });
+            }
+
+            W.onNavigationCompleted(function (info) {
+                forward('onNavigationCompleted', info);
+                document.getElementById('state').textContent =
+                    '已转发 onNavigationCompleted (success=' + info.success + ')';
+            });
+
+            // 稀少事件: 正常运行不会触发, 注册以备异常时上报
+            W.onProcessFailed(function (info) {
+                forward('onProcessFailed', info);
+            });
+            W.onLastSessionCrashed(function () {
+                forward('onLastSessionCrashed', {});
+            });
+        })();
+    </script>
+</body>
+
+</html>

@@ -12,7 +12,9 @@ var menuConfig = {
         { script: 'code/system/env.js', title: '环境变量' },
         { script: 'code/system/console_output.js', title: '捕获控制台输出' },
         { script: 'code/system/openDevTools.js', title: '开发者工具' },
-        { script: 'code/system/exitApp.js', title: '退出应用' }
+        { script: 'code/system/exitApp.js', title: '退出应用' },
+        { script: 'code/system/auto_start.js', title: '开机自启动' },
+        { script: 'code/system/callback_events.js', title: '回调事件' }
     ],
     file: {
         readwrite: {
