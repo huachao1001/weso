@@ -12,6 +12,8 @@
   remove 方法，`W.removeNativeMsgListener` 不存在，调用会报错）。真正能移除回调的只有：
   - `W.removePythonMsgListener(listener)`（Python 消息）
   - `W.captureConsoleOutput()`（不传 cb 关闭控制台监听）
+  - `W.removeProcessFailedListener` / `removeNavigationCompletedListener` /
+    `removeLastSessionCrashedListener`（运行时回调事件，见 `system.md`）
   
   仅停捕获但不移除回调的：
   - `W.unhookKeyboard()` / `W.unhookMouse()`（停止 Hook，但已注册回调仍在，见 `hooks.md`）

@@ -1,6 +1,6 @@
 # Weso JS — System 模块参考
 
-覆盖弹窗、命令执行、环境变量、控制台捕获、DevTools、退出共 7 个函数。
+覆盖弹窗、命令执行、环境变量、控制台捕获、DevTools、退出、开机自启、运行时回调事件共 15 个函数。
 
 ---
 
@@ -119,6 +119,83 @@ W.exitApp();
 
 ---
 
+### `W.setAutoStart`
+
+同步开启/关闭开机自启：在用户启动文件夹（`shell:startup`）创建/删除指向当前 exe 的快捷方式。快捷方式文件名取自 `weso.json` 的 `appNameCN`。
+
+**参数：**
+
+- `enable`* boolean：true 创建（已存在则覆盖），false 删除（不存在视为成功）
+
+返回 `true`/`false` 表示操作是否成功。
+
+```js
+W.setAutoStart(true);   // 开启
+W.setAutoStart(false);  // 关闭
+```
+
+---
+
+### `W.isAutoStart`
+
+同步查询当前是否已开启开机自启（解析启动文件夹中 `.lnk` 的目标并比对当前 exe 路径）。
+
+```js
+if (W.isAutoStart() === true) {
+  console.log("已开启自启");
+}
+```
+
+---
+
+### `W.onProcessFailed` / `W.removeProcessFailedListener`
+
+注册/注销渲染进程异常回调（进程崩溃或卡死，白屏根因）。native 已自动 Reload，此回调在新页面加载完成时投递，`info.recovered=true`。注册同步，回调异步触发。
+
+**info：**
+
+- `kind` number、`reason` number、`exitCode` number、`recovered` boolean
+
+```js
+function onFail(info) { console.log("recovered=" + info.recovered); }
+W.onProcessFailed(onFail);
+// ...
+W.removeProcessFailedListener(onFail);   // 须传同一函数引用
+```
+
+---
+
+### `W.onNavigationCompleted` / `W.removeNavigationCompletedListener`
+
+注册/注销导航完成回调：首次加载、Reload、站内跳转结束时触发。
+
+**info：**
+
+- `success` boolean、`errorStatus` number
+
+```js
+function onNav(info) { console.log("success=" + info.success); }
+W.onNavigationCompleted(onNav);
+```
+
+> 主窗口的脚本由用户点击"运行"触发，那时初始导航早已完成，本窗口难以捕获自身的初始 `onNavigationCompleted`（导航会销毁 JS 上下文）。要捕获初始导航，在子窗口的文档加载阶段注册（见工作流 3）。
+
+---
+
+### `W.onLastSessionCrashed` / `W.removeLastSessionCrashedListener`
+
+注册/注销"上次会话异常退出"回调。仅在进程启动后**首个窗口首次导航**时触发一次，表明上次进程被强杀或崩溃（`session.lock` 残留）。
+
+```js
+W.onLastSessionCrashed(function () {
+  console.log("上次未正常退出");
+});
+```
+
+> 三个 `on*` 均同步注册、回调异步触发；注销必须传同一个 cb 引用。监听器随所在窗口生命周期结束自动失效。
+
+---
+
 ## 常见工作流
 
 ### 工作流 1：限时捕获 DLL stdout
@@ -150,5 +227,23 @@ W.captureConsoleOutput(function (output) {
 // 子窗口 (child.html)
 W.addWinMsgListener(function (data) {
   if (data.kind === "console") console.log(data.text);
+});
+```
+
+### 工作流 3：子窗口转发运行时回调
+
+主窗口初始导航在脚本运行前已完成，难以捕获自身的 `onNavigationCompleted`；开一个子窗口，它的脚本在文档加载阶段执行，能捕获自身初始导航事件并转发回主窗口：
+
+```js
+// 主窗口
+W.addWinMsgListener(function (data) {
+  console.log("[子窗口转发]", JSON.stringify(data));
+});
+W.createWin({ entry: "child.html", width: 420, height: 220 });
+
+// child.html
+var mainHwnd = W.getMainHWND();
+W.onNavigationCompleted(function (info) {
+  W.postWinMsg(mainHwnd, { event: "onNavigationCompleted", info: info });
 });
 ```

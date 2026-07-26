@@ -55,7 +55,7 @@ console.log(W.getWorkspace());
 |-----------|---------|
 | 读写文件、目录、选择文件 | `reference/file-io.md` |
 | 路径、资源、工作区 | `reference/paths-assets.md` |
-| 弹窗、命令、环境变量、控制台、退出 | `reference/system.md` |
+| 弹窗、命令、环境变量、控制台、退出、开机自启、运行时回调事件 | `reference/system.md` |
 | 调 DLL、原生函数 | `reference/dll-interop.md` |
 | 窗口、拖拽、托盘、关闭按钮、透明/穿透/置顶/阴影 | `reference/window.md` |
 | 键盘/鼠标 Hook | `reference/hooks.md` |
@@ -90,8 +90,9 @@ console.log(W.getWorkspace());
    （`fetch`、`TextEncoder`、`Uint8Array`、`btoa/atob`）+ `W.*`。
 5. **监听器叠加。** `addNativeMsgListener` 及其衍生函数注册的回调可叠加。**移除有限**：
    通用 `addNativeMsgListener`/`addWinMsgListener`/`addFileDragListener` **无 remove API**；
-   仅 `removePythonMsgListener`、`captureConsoleOutput()`（不传 cb）、`unhook*` 可停用，
-   且需传同一个函数引用。
+   仅 `removePythonMsgListener`、`captureConsoleOutput()`（不传 cb）、`unhook*`、
+   以及运行时回调的 `removeProcessFailedListener`/`removeNavigationCompletedListener`/
+   `removeLastSessionCrashedListener`（见 `system.md`）可停用，且需传同一个函数引用。
 
 ---
 
@@ -149,7 +150,7 @@ console.log(W.getWorkspace());
 | `W.getRes` | 同步 | res/ 相对路径→绝对路径 |
 | `W.getAssets` | 异步 | 读取打包资源 |
 
-### System（7 个）
+### System（15 个）
 
 | 函数名 | 同步/异步 | 用途 |
 |--------|----------|------|
@@ -160,6 +161,14 @@ console.log(W.getWorkspace());
 | `W.captureConsoleOutput` | 同步注册 | 捕获原生 stdout/stderr |
 | `W.exitApp` | 同步 | 退出应用 |
 | `W.openDevTools` | 同步 | 打开 DevTools |
+| `W.setAutoStart` | 同步 | 开启/关闭开机自启 |
+| `W.isAutoStart` | 同步 | 查询自启状态 |
+| `W.onProcessFailed` | 同步注册 | 渲染进程崩溃/卡死回调 |
+| `W.onNavigationCompleted` | 同步注册 | 导航完成回调 |
+| `W.onLastSessionCrashed` | 同步注册 | 上次会话异常退出回调 |
+| `W.removeProcessFailedListener` | 同步 | 注销 onProcessFailed |
+| `W.removeNavigationCompletedListener` | 同步 | 注销 onNavigationCompleted |
+| `W.removeLastSessionCrashedListener` | 同步 | 注销 onLastSessionCrashed |
 
 ### DLL Interop（7 个）
 
