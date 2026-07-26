@@ -46,6 +46,8 @@ Weso 开发分两个层面：
 | `W.alert` | 同步 | 原生消息框 |
 | `W.system` | 异步 | 执行 cmd 命令 |
 | `W.getEnv` / `W.setEnv` | 同步 | 读写环境变量 |
+| `W.setAutoStart` / `W.isAutoStart` | 同步 | 开机自启 |
+| `W.onProcessFailed` 等 / `remove*Listener` | 同步注册/同步 | 运行时回调事件 |
 | `W.exitApp` | 同步 | 退出应用 |
 
 ### DLL Interop
