@@ -138,6 +138,8 @@ declare function invokeByAddr(params: {
     };
     args?: unknown[];
 }): Promise<unknown>;
+declare function addDllMsgListener(handle: number, listener: (msg: unknown) => void): Promise<boolean>;
+declare function removeDllMsgListener(listener: (msg: unknown) => void): void;
 declare class Dll {
     handle: number;
     private _path;
@@ -156,6 +158,8 @@ declare class Dll {
         ret?: string;
         params?: string[];
     }, args?: unknown[]): Promise<unknown>;
+    addMsgListener(listener: (msg: unknown) => void): Promise<boolean>;
+    removeMsgListener(listener: (msg: unknown) => void): void;
     free(): void;
     dispose(): void;
 }
@@ -299,6 +303,8 @@ interface Weso {
     getProcAddr: typeof getProcAddr;
     invokeByHandle: typeof invokeByHandle;
     invokeByAddr: typeof invokeByAddr;
+    addDllMsgListener: typeof addDllMsgListener;
+    removeDllMsgListener: typeof removeDllMsgListener;
     Dll: typeof Dll;
     openDevTools: typeof openDevTools;
     createWin: typeof createWin;

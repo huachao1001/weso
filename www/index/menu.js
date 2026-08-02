@@ -146,6 +146,12 @@ var menuConfig = {
                 { script: 'code/cpp/dllclass/string.js', title: '字符串链式' },
                 { script: 'code/cpp/dllclass/stateful.js', title: '有状态验证' }
             ]
+        },
+        msg: {
+            name: 'DLL→JS 消息',
+            items: [
+                { script: 'code/cpp/msg/basic.js', title: 'addMsgListener(DLL 回调 JS)' }
+            ]
         }
     },
     python: {
