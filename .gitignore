@@ -7,3 +7,4 @@ jslib.js
 .res/
 *.pyc
 py3/
+.codegraph

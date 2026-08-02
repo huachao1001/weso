@@ -2,6 +2,7 @@ var menuConfig = {
     modules: [
         { id: 'system', icon: '⚙️', name: '系统' },
         { id: 'file', icon: '📁', name: '文件' },
+        { id: 'net', icon: '🌐', name: '网络' },
         { id: 'window', icon: '🪟', name: '窗口' },
         { id: 'cpp', icon: '➕', name: 'C++' },
         { id: 'python', icon: '🐍', name: 'Python' }
@@ -161,6 +162,15 @@ var menuConfig = {
             items: [
                 { script: 'code/python/advanced/sys_path.js', title: '添加模块搜索路径' },
                 { script: 'code/python/advanced/comm.js', title: 'JS与Python通信' }
+            ]
+        }
+    },
+    net: {
+        fetch: {
+            name: '跨域请求与Referer',
+            items: [
+                { script: 'code/net/fetch/cross_origin.js', title: '跨域访问外网 (自动Referer)' },
+                { script: 'code/net/fetch/custom_referer.js', title: '自定义Referer' }
             ]
         }
     }
