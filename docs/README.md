@@ -74,6 +74,18 @@ Weso 开发分两个层面：
 | `W.initPython` | 异步 | 初始化解释器 |
 | `W.runPythonScript` | 异步 | 运行脚本字符串 |
 
+### Network（无新增 `W.*`，标准 `fetch` 增强）
+
+> weso 放开 CORS 并由 C++ 网络层改写 Referer，`fetch` 写法不变。详见
+> [网络 (跨域/Referer)](reference/network.md)。
+
+| 行为 | 用法 |
+|------|------|
+| 跨域访问外网 | `await fetch(url)` —— CORS 已放开，直接请求 |
+| 自动补目标域名作 Referer | `await fetch(url)` —— 不传 `referrer` 时自动补 |
+| 自定义 Referer | `await fetch(url, { referrer: "https://..." })` |
+| 不发 Referer | `await fetch(url, { referrer: "" })` |
+
 ---
 
 ## 参考文档
