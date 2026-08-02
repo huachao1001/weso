@@ -61,6 +61,7 @@ console.log(W.getWorkspace());
 | 键盘/鼠标 Hook | `reference/hooks.md` |
 | 运行 Python | `reference/python.md` |
 | 窗口间通信、事件监听、拖拽文件 | `reference/messaging.md` |
+| 跨域 fetch、自动/自定义 Referer | `reference/network.md` |
 
 ---
 
@@ -234,6 +235,18 @@ console.log(W.getWorkspace());
 | `W.addNativeMsgListener` | 同步注册 | 通用事件监听（无 remove） |
 | `W.addFileDragListener` | 同步注册 | 文件拖拽回调 |
 
+### Network（无新增 `W.*`，标准 `fetch` 增强）
+
+> 无独立函数。weso 放开 CORS 且由 C++ 网络层改写 Referer，`fetch` 写法不变。
+> 详见 `reference/network.md`。
+
+| 行为 | 用法 |
+|------|------|
+| 跨域访问外网 | `await fetch(url)` —— CORS 已放开，直接请求 |
+| 自动补目标域名作 Referer | `await fetch(url)` —— 不传 `referrer` 时自动补 |
+| 自定义 Referer | `await fetch(url, { referrer: "https://..." })` |
+| 不发 Referer | `await fetch(url, { referrer: "" })` |
+
 ---
 
 ## 快速示例
@@ -338,3 +351,4 @@ W.bindDragWin(document.getElementById("titlebar"), function () {
 - **输入 Hook**（键盘/鼠标）→ `reference/hooks.md`
 - **Python 集成**（安装/运行/通信）→ `reference/python.md`
 - **消息与 IPC**（窗口通信/事件/拖拽）→ `reference/messaging.md`
+- **网络**（跨域 fetch/自动与自定义 Referer）→ `reference/network.md`

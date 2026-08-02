@@ -24,7 +24,8 @@ var docsMenu = {
         { doc: 'skills/reference/window.md', title: '窗口管理' },
         { doc: 'skills/reference/hooks.md', title: '输入 Hook' },
         { doc: 'skills/reference/python.md', title: 'Python 集成' },
-        { doc: 'skills/reference/messaging.md', title: '消息与 IPC' }
+        { doc: 'skills/reference/messaging.md', title: '消息与 IPC' },
+        { doc: 'skills/reference/network.md', title: '网络 (跨域/Referer)' }
     ]
 };
 
