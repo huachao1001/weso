@@ -1,9 +1,5 @@
 // === 自定义 Referer (手动覆盖 / 不发送) ===
-
-// 用户 API 是标准 fetch 的 init.referrer。WebView2 会忽略 init.referrer、且 Referer
-// 是 forbidden header 不能经 fetch headers 设置, 故 weso 把 init.referrer 转成
-// X-Weso-Referer 头, 交 C++ 网络层 (WebResourceRequested) 改写为真实 Referer。
-// 用户写法不变:
+// 用标准 fetch 的 init.referrer 即可:
 //   fetch(url, {referrer:"https://www.example.com/"})  -> 用自定义值
 //   fetch(url, {referrer:""})                          -> 不发 Referer
 //   fetch(url)                                         -> 自动补目标域名 (见上一个示例)
