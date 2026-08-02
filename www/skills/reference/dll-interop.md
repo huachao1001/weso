@@ -161,17 +161,20 @@ var ret = await W.invokeByAddr({ addr: addr, proto: "iii", args: [5, 6] });
 
 ### `W.addDllMsgListener`
 
-异步注册 DLL→JS 消息监听器：weso 向 DLL 注入 `post_msg` 函数指针（调用 DLL 的
-`Weso_SetHostAPI` 导出），DLL 后续调 `post_msg(jsonStr)` 时，JSON 解析后流入 `listener`。
-返回 `Promise<boolean>`，`true` = 注入成功；**DLL 未导出 `Weso_SetHostAPI` 时 reject**。
+异步注册 DLL→JS 消息监听器：weso 向 DLL 注入 `post_msg` 函数指针 + 调用方窗口的 HWND
+（调用 DLL 的 `Weso_SetHostAPI` 导出），DLL 后续调 `post_msg(jsonStr, hwnd)` 时，host 据
+hwnd 把消息路由到**注册它的那个窗口**的 webview，JSON 解析后流入 `listener`。多窗口下
+各窗口的 listener 互不串扰。返回 `Promise<boolean>`，`true` = 注入成功；
+**DLL 未导出 `Weso_SetHostAPI` 时 reject**。
 
 **参数：**
 
 - `handle`* number：`loadDll`/`new W.Dll` 取得的模块句柄
 - `listener`* (msg: unknown) => void：收到的是 **JSON 解析后的对象**（DLL 须 post 合法 JSON 串）
 
-> DLL 侧契约：导出 `void Weso_SetHostAPI(void(*post)(const char*))`，host 调一次注入
-> 函数指针；DLL 在任意线程调 `post(jsonStr)` 即可把消息推回 JS。参见 `res/weso_msg_dll.c`。
+> DLL 侧契约：导出 `void Weso_SetHostAPI(void(*post)(const char*, HWND), HWND hwnd)`，
+> host 调一次注入函数指针和注册窗口的 HWND；DLL 在任意线程调 `post(jsonStr, hwnd)` 即可
+> 把消息推回 JS（hwnd 原样回传即可，host 负责路由）。参见 `res/weso_msg_dll.c`。
 
 ```js
 var h = W.loadDll(W.getRes("weso_msg_dll.dll"));
@@ -210,7 +213,7 @@ W.removeDllMsgListener(onMsg);
 | `invoke(func, proto, args)` | 异步 | 缓存地址后调用（反复调用首选） |
 | `call(func, proto, args)` | 异步 | 不缓存地址（一次性） |
 | `callAddr(addr, proto, args)` | 异步 | 按已有地址调用 |
-| `addMsgListener(listener)` | 异步 | 注入 host 函数指针、注册 DLL→JS 消息回调（`Promise<boolean>`，无 `Weso_SetHostAPI` 时 reject） |
+| `addMsgListener(listener)` | 异步 | 注入 host 函数指针 + 注册窗口 HWND、注册 DLL→JS 消息回调（`Promise<boolean>`，无 `Weso_SetHostAPI` 时 reject） |
 | `removeMsgListener(listener)` | 同步 | 解挂回调（须同一函数引用） |
 | `free()` / `dispose()` | 同步 | 释放模块，多次调用安全 |
 
@@ -282,7 +285,8 @@ W.freeDll(h);
 ### 工作流 5：DLL → JS 消息回推
 
 DLL 后台线程主动向 JS 推消息（进度、事件、流式数据等）。DLL 须导出
-`Weso_SetHostAPI` 接收 host 注入的 `post_msg` 函数指针，再在需要时调用它。
+`Weso_SetHostAPI` 接收 host 注入的 `post_msg` 函数指针和注册窗口的 HWND，
+再在需要时调用它（把 hwnd 一起传回，host 据此路由到对应窗口）。
 
 ```js
 var dll = new W.Dll(W.getRes("weso_msg_dll.dll"));
