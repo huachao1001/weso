@@ -56,7 +56,9 @@ Weso 开发分两个层面：
 |--------|----------|------|
 | `W.invokeDll` | 异步 | 一次性加载+调用+释放 |
 | `W.loadDll` / `W.freeDll` | 同步 | 加载/释放 DLL |
-| `new W.Dll(path)` | — | DLL 封装类 |
+| `W.addDllMsgListener` | 异步 | 注册 DLL→JS 消息回调（注入 host 函数指针） |
+| `W.removeDllMsgListener` | 同步 | 解挂 DLL→JS 消息回调 |
+| `new W.Dll(path)` | — | DLL 封装类（含 `addMsgListener`/`removeMsgListener`） |
 
 ### Window
 

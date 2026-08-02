@@ -1,6 +1,6 @@
 # Weso JS — DLL Interop 模块参考
 
-覆盖 DLL 加载/调用/释放及 `Dll` 封装类共 7 个函数。所有调用为**异步**（返回
+覆盖 DLL 加载/调用/释放、`Dll` 封装类及 DLL→JS 消息回推共 9 个函数。所有调用为**异步**（返回
 `Promise`）；`loadDll`/`freeDll`/`getProcAddr` 为**同步**。
 
 > 只能加载 **x64 DLL**，32 位 DLL 让 `loadDll` 返回 `0`。
@@ -159,6 +159,44 @@ var ret = await W.invokeByAddr({ addr: addr, proto: "iii", args: [5, 6] });
 
 ---
 
+### `W.addDllMsgListener`
+
+异步注册 DLL→JS 消息监听器：weso 向 DLL 注入 `post_msg` 函数指针（调用 DLL 的
+`Weso_SetHostAPI` 导出），DLL 后续调 `post_msg(jsonStr)` 时，JSON 解析后流入 `listener`。
+返回 `Promise<boolean>`，`true` = 注入成功；**DLL 未导出 `Weso_SetHostAPI` 时 reject**。
+
+**参数：**
+
+- `handle`* number：`loadDll`/`new W.Dll` 取得的模块句柄
+- `listener`* (msg: unknown) => void：收到的是 **JSON 解析后的对象**（DLL 须 post 合法 JSON 串）
+
+> DLL 侧契约：导出 `void Weso_SetHostAPI(void(*post)(const char*))`，host 调一次注入
+> 函数指针；DLL 在任意线程调 `post(jsonStr)` 即可把消息推回 JS。参见 `res/weso_msg_dll.c`。
+
+```js
+var h = W.loadDll(W.getRes("weso_msg_dll.dll"));
+await W.addDllMsgListener(h, function (msg) {
+  console.log("[from dll]", msg);   // 如 { event:"tick", n:3 }
+});
+await W.invokeByHandle({ handle: h, func: "start", proto: "i", args: [] });
+```
+
+---
+
+### `W.removeDllMsgListener`
+
+同步解挂监听器，须传**同一函数引用**。无 handle 参数（按 listener 查找）。
+
+**参数：**
+
+- `listener`* (msg: unknown) => void
+
+```js
+W.removeDllMsgListener(onMsg);
+```
+
+---
+
 ### `new W.Dll(path?)`
 
 `Dll` 封装类，缓存导出地址以加速重复调用。**必须手动 `free()`**。
@@ -172,6 +210,8 @@ var ret = await W.invokeByAddr({ addr: addr, proto: "iii", args: [5, 6] });
 | `invoke(func, proto, args)` | 异步 | 缓存地址后调用（反复调用首选） |
 | `call(func, proto, args)` | 异步 | 不缓存地址（一次性） |
 | `callAddr(addr, proto, args)` | 异步 | 按已有地址调用 |
+| `addMsgListener(listener)` | 异步 | 注入 host 函数指针、注册 DLL→JS 消息回调（`Promise<boolean>`，无 `Weso_SetHostAPI` 时 reject） |
+| `removeMsgListener(listener)` | 同步 | 解挂回调（须同一函数引用） |
 | `free()` / `dispose()` | 同步 | 释放模块，多次调用安全 |
 
 ```js
@@ -238,3 +278,32 @@ var addr = W.getProcAddr(h, "add");
 var ret = await W.invokeByAddr({ addr: addr, proto: "iii", args: [5, 6] });
 W.freeDll(h);
 ```
+
+### 工作流 5：DLL → JS 消息回推
+
+DLL 后台线程主动向 JS 推消息（进度、事件、流式数据等）。DLL 须导出
+`Weso_SetHostAPI` 接收 host 注入的 `post_msg` 函数指针，再在需要时调用它。
+
+```js
+var dll = new W.Dll(W.getRes("weso_msg_dll.dll"));
+
+function onMsg(msg) { console.log("[from dll]", msg); }
+
+// 1. 挂 listener + 注入 host 函数指针
+await dll.addMsgListener(onMsg);
+
+// 2. 启动 DLL 后台线程: 它会每秒 post 一条 {"event":"tick","n":N}
+await dll.invoke("start", "i", []);
+
+// ... onMsg 每秒收到 tick ...
+await new Promise(function (r) { setTimeout(r, 3500); });
+
+// 3. 停止线程 → 解挂 listener → 释放模块
+await dll.invoke("stop", "v", []);
+dll.removeMsgListener(onMsg);
+dll.free();
+```
+
+> 释放前先停掉 DLL 自己的后台线程（如 `stop`），再 `removeMsgListener`，最后
+> `free()`。`free()` 会触发 `DLL_PROCESS_DETACH`，示例 DLL 在此安全 join 线程
+> （见 `res/weso_msg_dll.c`）。
