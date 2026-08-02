@@ -56,7 +56,7 @@ console.log(W.getWorkspace());
 | 读写文件、目录、选择文件 | `reference/file-io.md` |
 | 路径、资源、工作区 | `reference/paths-assets.md` |
 | 弹窗、命令、环境变量、控制台、退出、开机自启、运行时回调事件 | `reference/system.md` |
-| 调 DLL、原生函数 | `reference/dll-interop.md` |
+| 调 DLL、原生函数、DLL→JS 回调 | `reference/dll-interop.md` |
 | 窗口、拖拽、托盘、关闭按钮、透明/穿透/置顶/阴影 | `reference/window.md` |
 | 键盘/鼠标 Hook | `reference/hooks.md` |
 | 运行 Python | `reference/python.md` |
@@ -171,7 +171,7 @@ console.log(W.getWorkspace());
 | `W.removeNavigationCompletedListener` | 同步 | 注销 onNavigationCompleted |
 | `W.removeLastSessionCrashedListener` | 同步 | 注销 onLastSessionCrashed |
 
-### DLL Interop（7 个）
+### DLL Interop（9 个）
 
 | 函数名 | 同步/异步 | 用途 |
 |--------|----------|------|
@@ -181,7 +181,9 @@ console.log(W.getWorkspace());
 | `W.getProcAddr` | 同步 | 导出名→函数地址 |
 | `W.invokeByHandle` | 异步 | 按句柄+导出名调用 |
 | `W.invokeByAddr` | 异步 | 按地址调用 |
-| `new W.Dll(path)` | — | DLL 封装类（缓存地址，反复调用首选） |
+| `W.addDllMsgListener` | 异步 | 注册 DLL→JS 消息回调（注入 host 函数指针） |
+| `W.removeDllMsgListener` | 同步 | 解挂 DLL→JS 消息回调 |
+| `new W.Dll(path)` | — | DLL 封装类（缓存地址，反复调用首选；含 `addMsgListener`/`removeMsgListener`） |
 
 ### Window（22 函数 + WinMode 常量）
 
@@ -346,7 +348,7 @@ W.bindDragWin(document.getElementById("titlebar"), function () {
 - **文件 I/O**（读写/目录/选择器）→ `reference/file-io.md`
 - **路径与资源**（标准目录/打包资源）→ `reference/paths-assets.md`
 - **系统 / OS**（弹窗/命令/环境/控制台）→ `reference/system.md`
-- **DLL 互操作**（加载/调用/类/proto）→ `reference/dll-interop.md`
+- **DLL 互操作**（加载/调用/类/proto/DLL→JS 回调）→ `reference/dll-interop.md`
 - **窗口管理**（创建/状态/几何/拖拽/托盘）→ `reference/window.md`
 - **输入 Hook**（键盘/鼠标）→ `reference/hooks.md`
 - **Python 集成**（安装/运行/通信）→ `reference/python.md`
